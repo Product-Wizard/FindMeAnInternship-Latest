@@ -1,4 +1,6 @@
-export type PageView = 'home' | 'impact' | 'jobs' | 'involved';
+import React from 'react';
+
+export type PageView = 'home' | 'impact' | 'jobs' | 'involved' | 'resources';
 
 export interface Job {
   id: string;
@@ -9,6 +11,18 @@ export interface Job {
   category: string;
   postedDate: string;
   description: string;
+}
+
+export interface Article {
+  id: string;
+  title: string;
+  category: string;
+  author: string;
+  date: string;
+  readTime: string;
+  imageUrl: string;
+  content: string; // In a real app, this might be HTML or Markdown
+  summary: string;
 }
 
 export interface Stat {

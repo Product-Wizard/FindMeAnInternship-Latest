@@ -9,6 +9,7 @@ import { PageView, Job } from './types';
 import { PlacementsChart, DiversityChart } from './components/ImpactCharts';
 import { AICareerCoach } from './components/AICareerCoach';
 import { JobSlider } from './components/JobSlider';
+import { ResourcesPage } from './components/ResourcesPage';
 
 // --- Components ---
 
@@ -48,6 +49,7 @@ const Navbar = ({ currentPage, onNavigate }: { currentPage: PageView, onNavigate
             <NavLink page="home" label="Home" />
             <NavLink page="impact" label="Our Impact" />
             <NavLink page="jobs" label="Find Opportunities" />
+            <NavLink page="resources" label="Resources & Blog" />
             <button
               onClick={() => onNavigate('involved')}
               className="bg-brand-dark hover:bg-brand-teal text-white px-5 py-2.5 rounded-full font-medium transition-all transform hover:scale-105 shadow-md"
@@ -71,6 +73,7 @@ const Navbar = ({ currentPage, onNavigate }: { currentPage: PageView, onNavigate
           <NavLink page="home" label="Home" />
           <NavLink page="impact" label="Our Impact" />
           <NavLink page="jobs" label="Find Opportunities" />
+          <NavLink page="resources" label="Resources & Blog" />
           <NavLink page="involved" label="Get Involved" />
         </div>
       )}
@@ -101,6 +104,7 @@ const Footer = ({ onNavigate }: { onNavigate: (page: PageView) => void }) => (
           <li><button onClick={() => onNavigate('home')} className="hover:text-brand-teal">Home</button></li>
           <li><button onClick={() => onNavigate('impact')} className="hover:text-brand-teal">Our Impact</button></li>
           <li><button onClick={() => onNavigate('jobs')} className="hover:text-brand-teal">Browse Jobs</button></li>
+          <li><button onClick={() => onNavigate('resources')} className="hover:text-brand-teal">Resources</button></li>
         </ul>
       </div>
 
@@ -571,6 +575,7 @@ function App() {
       case 'home': return <HomePage onNavigate={setCurrentPage} />;
       case 'impact': return <ImpactPage />;
       case 'jobs': return <JobBoard />;
+      case 'resources': return <ResourcesPage />;
       case 'involved': return <GetInvolvedPage />;
       default: return <HomePage onNavigate={setCurrentPage} />;
     }
