@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { 
   Clock, User, ArrowLeft, Calendar, Share2, Link as LinkIcon, Check, Facebook, Twitter, Linkedin 
 } from 'lucide-react';
@@ -58,20 +59,39 @@ const INITIAL_ARTICLES: Article[] = [
 ];
 
 export const ResourcesPage: React.FC = () => {
-  const [view, setView] = useState<'list' | 'detail'>('list');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const articleId = searchParams.get('id');
+  
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
   const [articles] = useState<Article[]>(INITIAL_ARTICLES);
   const [copied, setCopied] = useState(false);
 
-  const handleArticleClick = (article: Article) => {
-    setActiveArticle(article);
-    setView('detail');
+  useEffect(() => {
+    if (articleId) {
+      const found = articles.find(a => a.id === articleId);
+      if (found) {
+        setActiveArticle(found);
+        window.scrollTo(0, 0);
+      } else {
+        setActiveArticle(null);
+      }
+    } else {
+      setActiveArticle(null);
+    }
     setCopied(false);
+  }, [articleId, articles]);
+
+  const handleArticleClick = (article: Article) => {
+    setSearchParams({ id: article.id });
+  };
+
+  const handleBack = () => {
+    setSearchParams({});
   };
 
   const handleShare = (platform: 'twitter' | 'linkedin' | 'facebook' | 'copy') => {
     if (!activeArticle) return;
-    const url = window.location.href; // Using current URL for demo purposes
+    const url = window.location.href; 
     const text = `Check out this article: ${activeArticle.title}`;
 
     switch (platform) {
@@ -152,7 +172,7 @@ export const ResourcesPage: React.FC = () => {
     return (
       <div className="animate-fade-in max-w-4xl mx-auto">
         <button 
-          onClick={() => setView('list')}
+          onClick={handleBack}
           className="flex items-center gap-2 text-slate-500 hover:text-brand-teal mb-8 font-medium transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Articles
@@ -238,8 +258,7 @@ export const ResourcesPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-7xl mx-auto px-4">
-        {view === 'list' && <RenderList />}
-        {view === 'detail' && <RenderDetail />}
+        {activeArticle ? <RenderDetail /> : <RenderList />}
       </div>
     </div>
   );

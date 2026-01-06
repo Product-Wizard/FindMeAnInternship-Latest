@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { Routes, Route, Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   GraduationCap, Building2, Briefcase, Users, ArrowRight, 
   Search, MapPin, CheckCircle2, HeartHandshake, TrendingUp,
   Menu, X, Facebook, Twitter, Linkedin, Instagram, Mail,
   Globe, Home, Laptop
 } from 'lucide-react';
-import { PageView, Job } from './types';
+import { Job } from './types';
 import { PlacementsChart, DiversityChart } from './components/ImpactCharts';
 import { AICareerCoach } from './components/AICareerCoach';
 import { JobSlider } from './components/JobSlider';
@@ -14,26 +15,31 @@ import { ResourcesPage } from './components/ResourcesPage';
 // --- Components ---
 
 // Navbar
-const Navbar = ({ currentPage, onNavigate }: { currentPage: PageView, onNavigate: (page: PageView) => void }) => {
+const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
-  const NavLink = ({ page, label }: { page: PageView, label: string }) => (
-    <button
-      onClick={() => { onNavigate(page); setMobileMenuOpen(false); }}
-      className={`font-medium transition-colors ${
-        currentPage === page ? 'text-brand-teal font-bold' : 'text-slate-600 hover:text-brand-teal'
-      }`}
-    >
-      {label}
-    </button>
-  );
+  const NavItem = ({ to, label }: { to: string, label: string }) => {
+    const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
+    return (
+      <Link
+        to={to}
+        onClick={() => setMobileMenuOpen(false)}
+        className={`font-medium transition-colors ${
+          isActive ? 'text-brand-teal font-bold' : 'text-slate-600 hover:text-brand-teal'
+        }`}
+      >
+        {label}
+      </Link>
+    );
+  };
 
   return (
     <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
-          <button onClick={() => onNavigate('home')} className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group">
             <div className="relative w-10 h-10 flex items-center justify-center bg-brand-teal/10 rounded-lg group-hover:bg-brand-teal/20 transition-colors">
               <GraduationCap className="w-6 h-6 text-brand-dark absolute -top-1 -left-1" />
               <Building2 className="w-6 h-6 text-brand-teal absolute bottom-0 right-0" />
@@ -42,20 +48,20 @@ const Navbar = ({ currentPage, onNavigate }: { currentPage: PageView, onNavigate
               <span className="font-bold text-brand-dark text-lg tracking-tight">FindMeAn</span>
               <span className="font-bold text-brand-teal text-lg tracking-tight">Internship</span>
             </div>
-          </button>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex gap-8 items-center">
-            <NavLink page="home" label="Home" />
-            <NavLink page="impact" label="Our Impact" />
-            <NavLink page="jobs" label="Find Opportunities" />
-            <NavLink page="resources" label="Resources & Blog" />
-            <button
-              onClick={() => onNavigate('involved')}
+            <NavItem to="/" label="Home" />
+            <NavItem to="/impact" label="Our Impact" />
+            <NavItem to="/jobs" label="Find Opportunities" />
+            <NavItem to="/resources" label="Resources & Blog" />
+            <Link
+              to="/involved"
               className="bg-brand-dark hover:bg-brand-teal text-white px-5 py-2.5 rounded-full font-medium transition-all transform hover:scale-105 shadow-md"
             >
               Get Involved
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -70,11 +76,11 @@ const Navbar = ({ currentPage, onNavigate }: { currentPage: PageView, onNavigate
       {/* Mobile Nav */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-b border-slate-200 p-4 space-y-4 flex flex-col">
-          <NavLink page="home" label="Home" />
-          <NavLink page="impact" label="Our Impact" />
-          <NavLink page="jobs" label="Find Opportunities" />
-          <NavLink page="resources" label="Resources & Blog" />
-          <NavLink page="involved" label="Get Involved" />
+          <NavItem to="/" label="Home" />
+          <NavItem to="/impact" label="Our Impact" />
+          <NavItem to="/jobs" label="Find Opportunities" />
+          <NavItem to="/resources" label="Resources & Blog" />
+          <NavItem to="/involved" label="Get Involved" />
         </div>
       )}
     </nav>
@@ -82,7 +88,7 @@ const Navbar = ({ currentPage, onNavigate }: { currentPage: PageView, onNavigate
 };
 
 // Footer
-const Footer = ({ onNavigate }: { onNavigate: (page: PageView) => void }) => (
+const Footer = () => (
   <footer className="bg-brand-dark text-slate-300 py-12">
     <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-8">
       <div>
@@ -101,10 +107,10 @@ const Footer = ({ onNavigate }: { onNavigate: (page: PageView) => void }) => (
       <div>
         <h4 className="text-white font-bold mb-4">Quick Links</h4>
         <ul className="space-y-2 text-sm">
-          <li><button onClick={() => onNavigate('home')} className="hover:text-brand-teal">Home</button></li>
-          <li><button onClick={() => onNavigate('impact')} className="hover:text-brand-teal">Our Impact</button></li>
-          <li><button onClick={() => onNavigate('jobs')} className="hover:text-brand-teal">Browse Jobs</button></li>
-          <li><button onClick={() => onNavigate('resources')} className="hover:text-brand-teal">Resources</button></li>
+          <li><Link to="/" className="hover:text-brand-teal">Home</Link></li>
+          <li><Link to="/impact" className="hover:text-brand-teal">Our Impact</Link></li>
+          <li><Link to="/jobs" className="hover:text-brand-teal">Browse Jobs</Link></li>
+          <li><Link to="/resources" className="hover:text-brand-teal">Resources</Link></li>
         </ul>
       </div>
 
@@ -138,7 +144,7 @@ const Footer = ({ onNavigate }: { onNavigate: (page: PageView) => void }) => (
 // --- Pages ---
 
 // Home Page
-const HomePage = ({ onNavigate }: { onNavigate: (page: PageView) => void }) => (
+const HomePage = () => (
   <div className="flex flex-col">
     {/* Problem Section (Hero) */}
     <section className="relative bg-brand-dark text-white pt-20 pb-32 overflow-hidden">
@@ -157,18 +163,18 @@ const HomePage = ({ onNavigate }: { onNavigate: (page: PageView) => void }) => (
             We exist to break the "no experience, no job" cycle. We connect driven students with organizations ready to nurture the next generation of leaders.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button 
-              onClick={() => onNavigate('jobs')}
+            <Link 
+              to="/jobs"
               className="bg-brand-teal hover:bg-brand-light text-white px-8 py-4 rounded-full font-bold transition-all flex items-center gap-2"
             >
               Find an Internship <ArrowRight className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={() => onNavigate('involved')}
-              className="bg-transparent border-2 border-white/20 hover:bg-white/10 text-white px-8 py-4 rounded-full font-bold transition-all"
+            </Link>
+            <Link 
+              to="/involved"
+              className="bg-transparent border-2 border-white/20 hover:bg-white/10 text-white px-8 py-4 rounded-full font-bold transition-all inline-block text-center"
             >
               Become a Partner
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -242,9 +248,9 @@ const HomePage = ({ onNavigate }: { onNavigate: (page: PageView) => void }) => (
               </div>
             </div>
             <div className="mt-8">
-              <button onClick={() => onNavigate('impact')} className="text-brand-teal font-bold hover:underline flex items-center gap-2">
+              <Link to="/impact" className="text-brand-teal font-bold hover:underline flex items-center gap-2">
                 See our full impact report <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </div>
           
@@ -567,27 +573,19 @@ const GetInvolvedPage = () => (
 
 // --- Main App Component ---
 function App() {
-  const [currentPage, setCurrentPage] = useState<PageView>('home');
-
-  // Simple router
-  const renderPage = () => {
-    switch(currentPage) {
-      case 'home': return <HomePage onNavigate={setCurrentPage} />;
-      case 'impact': return <ImpactPage />;
-      case 'jobs': return <JobBoard />;
-      case 'resources': return <ResourcesPage />;
-      case 'involved': return <GetInvolvedPage />;
-      default: return <HomePage onNavigate={setCurrentPage} />;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <Navbar currentPage={currentPage} onNavigate={setCurrentPage} />
+      <Navbar />
       <main className="flex-grow">
-        {renderPage()}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/impact" element={<ImpactPage />} />
+          <Route path="/jobs" element={<JobBoard />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/involved" element={<GetInvolvedPage />} />
+        </Routes>
       </main>
-      <Footer onNavigate={setCurrentPage} />
+      <Footer />
       
       {/* Global AI Assistant */}
       <AICareerCoach />
