@@ -1,16 +1,9 @@
 import { useState } from "react";
 
-import {
-  Building2,
-  ArrowRight,
-  Search,
-  MapPin,
-  Globe,
-  Home,
-  Laptop,
-} from "lucide-react";
+import { Building2, ArrowRight, Search, MapPin } from "lucide-react";
 import { Job } from "@/types";
 import { JobSlider } from "@/components/JobSlider";
+import JobLoactionPicker from "@/components/JobLoactionPicker";
 
 const JobBoard = () => {
   const [activeTab, setActiveTab] = useState<
@@ -191,38 +184,10 @@ const JobBoard = () => {
         {/* --- Featured Opportunities Slider Section --- */}
         <section className='mb-16'>
           <div className='flex flex-col items-center mb-8'>
-            <div className='inline-flex bg-white p-1 rounded-full border border-slate-200 shadow-sm'>
-              <button
-                onClick={() => setActiveTab("local")}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
-                  activeTab === "local"
-                    ? "bg-brand-teal text-white shadow-md"
-                    : "text-slate-600 hover:bg-slate-50"
-                }`}
-              >
-                <Home className='w-4 h-4' /> Local (Ibadan)
-              </button>
-              <button
-                onClick={() => setActiveTab("generic")}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
-                  activeTab === "generic"
-                    ? "bg-brand-teal text-white shadow-md"
-                    : "text-slate-600 hover:bg-slate-50"
-                }`}
-              >
-                <Laptop className='w-4 h-4' /> Remote / Generic
-              </button>
-              <button
-                onClick={() => setActiveTab("international")}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
-                  activeTab === "international"
-                    ? "bg-brand-teal text-white shadow-md"
-                    : "text-slate-600 hover:bg-slate-50"
-                }`}
-              >
-                <Globe className='w-4 h-4' /> International
-              </button>
-            </div>
+            <JobLoactionPicker
+              handleOnClickLoactionPicker={setActiveTab}
+              location={activeTab}
+            />
           </div>
 
           <JobSlider jobs={sliderJobs} />
@@ -236,7 +201,7 @@ const JobBoard = () => {
                 All Opportunities
               </h3>
               <p className='text-sm text-slate-500'>
-                Browse all {jobs.length} open positions
+                Browse all {jobs.length} open positions on this page
               </p>
             </div>
             {/* Simple Sort/Filter Mockup */}
