@@ -29,7 +29,7 @@ function Paginator({
           <ChevronLeft className='w-4 h-4' />
           <span>
             prevvious page{" "}
-            {pagination?.previousPage ? pagination.previousPage : ""}
+            {pagination?.previousPage ? pagination?.previousPage : ""}
           </span>
         </button>
 
@@ -41,7 +41,7 @@ function Paginator({
         >
           <span>
             next page{" "}
-            {currentPage < pagination.totalPages
+            {currentPage < pagination?.totalPages
               ? currentPage + 1
               : currentPage}
           </span>
