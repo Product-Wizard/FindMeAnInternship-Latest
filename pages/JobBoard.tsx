@@ -4,11 +4,13 @@ import { Building2, ArrowRight, Search, MapPin } from "lucide-react";
 import { Job } from "@/types";
 import { JobSlider } from "@/components/JobSlider";
 import JobLoactionPicker from "@/components/JobLoactionPicker";
-
+import JobService from "@/ApiService/JobSevice";
+import { JobCategoryType, JobLocalityType } from "@/types/model/Job.model";
+const PER_PAGE = 10;
 const JobBoard = () => {
-  const [activeTab, setActiveTab] = useState<
-    "local" | "generic" | "international"
-  >("local");
+  const [activeTab, setActiveTab] = useState<JobLocalityType>("");
+  const [jobCategory, setJobCategory] = useState<JobCategoryType>("");
+  const [page, setPage] = useState(1);
 
   const jobs: Job[] = [
     // Local (Ibadan)
@@ -140,32 +142,50 @@ const JobBoard = () => {
     },
   ];
 
+  const fetchJobQuery = JobService.fetchJobsServiceQuery({
+    perPage: PER_PAGE,
+    page: page,
+  });
+
   const getFilteredJobs = () => {
     switch (activeTab) {
       case "local":
-        return jobs.filter((job) => job.location.includes("Ibadan"));
+        return (fetchJobQuery?.data?.data || []).filter(
+          (job) => job.location.includes("local") || job.locale_type == "local"
+        );
       case "international":
         // Rudimentary check for international: Not Remote and Not Ibadan and Not Nigeria (unless explicitly Ibadan)
         // For this demo, I'll filter by specific cities or exclude Remote/Ibadan
-        return jobs.filter(
+        return (fetchJobQuery?.data?.data || []).filter(
           (job) =>
             !job.location.includes("Ibadan") &&
-            job.type !== "Remote" &&
+            job.type !== "remote" &&
             (job.location.includes("UK") ||
               job.location.includes("Sweden") ||
               job.location.includes("Germany") ||
+              job.location.includes("us") ||
+              job.location.includes("US") ||
               job.location.includes("NY"))
         );
-      case "generic":
-        return jobs.filter(
-          (job) => job.type === "Remote" || job.category === "Generic"
+      case "remote":
+        return (fetchJobQuery?.data?.data || []).filter(
+          (job) => job.type === "remote" || job.locale_type === "international"
         );
       default:
-        return jobs;
+        return fetchJobQuery?.data?.data || [];
     }
   };
 
+  const filterJobsByCategory = () => {
+    const jobs = (fetchJobQuery?.data?.data || []).filter((job) => {
+      if (jobCategory === "" || jobCategory === job.category) return true;
+      return false;
+    });
+    return jobs;
+  };
+
   const sliderJobs = getFilteredJobs();
+  const catergoryJobs = filterJobsByCategory();
 
   return (
     <div className='min-h-screen bg-slate-50 py-12'>
@@ -201,25 +221,26 @@ const JobBoard = () => {
                 All Opportunities
               </h3>
               <p className='text-sm text-slate-500'>
-                Browse all {jobs.length} open positions on this page
+                Browse all {(fetchJobQuery?.data?.data || []).length} open
+                positions on this page
               </p>
             </div>
             {/* Simple Sort/Filter Mockup */}
-            <select className='bg-white border border-slate-200 rounded-lg text-sm p-2 outline-none'>
+            {/* <select className='bg-white border border-slate-200 rounded-lg text-sm p-2 outline-none'>
               <option>Most Recent</option>
               <option>Relevance</option>
-            </select>
+            </select> */}
           </div>
 
           <div className='grid lg:grid-cols-4 gap-8'>
             {/* Sidebar Filters */}
             <div className='lg:col-span-1 space-y-6'>
               <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
-                <h3 className='font-bold text-brand-dark mb-4 flex items-center gap-2'>
+                {/* <h3 className='font-bold text-brand-dark mb-4 flex items-center gap-2'>
                   <Search className='w-4 h-4' /> Filters
-                </h3>
+                </h3> */}
                 <div className='space-y-4'>
-                  <div>
+                  {/* <div>
                     <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
                       Location Type
                     </label>
@@ -237,78 +258,94 @@ const JobBoard = () => {
                         </label>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
                   <div>
                     <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
                       Category
                     </label>
-                    <select className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'>
-                      <option>All Categories</option>
-                      <option>Technology</option>
-                      <option>Marketing</option>
-                      <option>Non-Profit</option>
+                    <select
+                      onChange={(e) => setJobCategory(e.target.value as any)}
+                      className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'
+                    >
+                      <option value=''>All</option>
+                      <option value='tech'>Technology</option>
+                      <option value='marketing'>Marketing</option>
+                      <option value='finance'>Finance</option>
+                      <option value='design'>Design</option>
+                      <option value='admin'>Admin</option>
+                      <option value='research'>Research</option>
                     </select>
                   </div>
-                </div>
-              </div>
-
-              <div className='bg-brand-teal/5 p-6 rounded-xl border border-brand-teal/20'>
-                <h3 className='font-bold text-brand-dark mb-2'>
-                  Need a Resume Check?
-                </h3>
-                <p className='text-sm text-slate-600 mb-4'>
-                  Our AI Career Coach can review your resume tips instantly.
-                </p>
-                <div className='text-brand-teal text-sm font-bold flex items-center gap-1'>
-                  Use the chat button <ArrowRight className='w-4 h-4' />
                 </div>
               </div>
             </div>
 
             {/* Job List */}
-            <div className='lg:col-span-3 space-y-4'>
-              {jobs.map((job) => (
-                <div
-                  key={job.id}
-                  className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'
-                >
-                  <div className='flex justify-between items-start mb-2'>
-                    <div>
-                      <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
-                        {job.title}
-                      </h3>
-                      <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
-                        <Building2 className='w-3 h-3' /> {job.company}
-                        <span className='w-1 h-1 bg-slate-300 rounded-full'></span>
-                        <MapPin className='w-3 h-3' /> {job.location}
-                      </div>
-                    </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium 
+            {catergoryJobs.length > 0 ? (
+              <div className='lg:col-span-3 space-y-4'>
+                {(catergoryJobs || []).map((job) => {
+                  return (
+                    <div
+                      key={job.id}
+                      className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'
+                    >
+                      <div className='flex justify-between items-start mb-2'>
+                        <div>
+                          <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
+                            {job.title}
+                          </h3>
+                          <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
+                            <Building2 className='w-3 h-3' /> {job.company}
+                            <span className='w-1 h-1 bg-slate-300 rounded-full'></span>
+                            <MapPin className='w-3 h-3' /> {job.location}
+                          </div>
+                        </div>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium 
                       ${
-                        job.type === "Remote"
+                        job.type === "remote"
                           ? "bg-purple-100 text-purple-700"
-                          : job.type === "Hybrid"
+                          : job.type === "hybrid"
                           ? "bg-blue-100 text-blue-700"
                           : "bg-green-100 text-green-700"
                       }`}
-                    >
-                      {job.type}
-                    </span>
-                  </div>
-                  <p className='text-slate-600 text-sm mb-4 line-clamp-2'>
-                    {job.description}
-                  </p>
-                  <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
-                    <span className='text-xs text-slate-400'>
-                      Posted {job.postedDate}
-                    </span>
-                    <button className='text-sm font-bold text-brand-teal hover:text-brand-dark'>
-                      Apply Now &rarr;
-                    </button>
-                  </div>
-                </div>
-              ))}
+                        >
+                          {job.type}
+                        </span>
+                      </div>
+                      <p className='text-slate-600 text-sm mb-4 line-clamp-2'>
+                        {job.description}
+                      </p>
+                      <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
+                        <span className='text-xs text-slate-400'>
+                          Posted {job.postedDate}
+                        </span>
+                        <button className='text-sm font-bold text-brand-teal hover:text-brand-dark'>
+                          Apply Now &rarr;
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className='p-12 text-center text-slate-400'>
+                {(fetchJobQuery.data.data || []).length > 0
+                  ? `No jobs found matching your filters. "${jobCategory}" on this page `
+                  : "no jobs available on this page"}
+              </div>
+            )}
+
+            <div className='bg-brand-teal/5 p-6 rounded-xl border border-brand-teal/20'>
+              <h3 className='font-bold text-brand-dark mb-2'>
+                Need a Resume Check?
+              </h3>
+              <p className='text-sm text-slate-600 mb-4'>
+                Our AI Career Coach can review your resume tips instantly.
+              </p>
+              <div className='text-brand-teal text-sm font-bold flex items-center gap-1'>
+                Use the chat button <ArrowRight className='w-4 h-4' />
+              </div>
             </div>
           </div>
         </div>

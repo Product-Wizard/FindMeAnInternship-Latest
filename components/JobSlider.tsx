@@ -8,9 +8,10 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { Job } from "../types";
+import { JobModelInterface } from "@/types/model/Job.model";
 
 interface JobSliderProps {
-  jobs: Job[];
+  jobs: JobModelInterface[];
 }
 
 export const JobSlider: React.FC<JobSliderProps> = ({
@@ -74,7 +75,7 @@ export const JobSlider: React.FC<JobSliderProps> = ({
             {/* Top accent line */}
             <div
               className={`h-1.5 w-full ${
-                job.type === "Remote"
+                job.type === "remote"
                   ? "bg-purple-500"
                   : job.location.includes("Ibadan")
                   ? "bg-brand-teal"
@@ -113,7 +114,7 @@ export const JobSlider: React.FC<JobSliderProps> = ({
               <div className='mt-auto pt-4 border-t border-slate-100 flex items-center justify-between'>
                 <span
                   className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                    job.type === "Remote"
+                    job.type === "remote"
                       ? "bg-purple-100 text-purple-700"
                       : "bg-green-100 text-green-700"
                   }`}
