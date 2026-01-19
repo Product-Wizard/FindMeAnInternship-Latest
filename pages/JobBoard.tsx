@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-import { Building2, ArrowRight, Search, MapPin } from "lucide-react";
+import { Building2, ArrowRight, MapPin } from "lucide-react";
 import { Job } from "@/types";
 import { JobSlider } from "@/components/JobSlider";
 import JobLoactionPicker from "@/components/JobLoactionPicker";
 import JobService from "@/ApiService/JobSevice";
 import { JobCategoryType, JobLocalityType } from "@/types/model/Job.model";
 import Paginator from "@/components/Paginator";
+import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
 const PER_PAGE = 30;
 const JobBoard = () => {
   const [activeTab, setActiveTab] = useState<JobLocalityType>("");
@@ -191,6 +192,9 @@ const JobBoard = () => {
 
   return (
     <div className='min-h-screen bg-slate-50 py-12'>
+      {fetchJobQuery.isFetching || fetchJobQuery.isLoading ? (
+        <BlockLoadingIndicator />
+      ) : null}
       <div className='max-w-7xl mx-auto px-4'>
         {/* Header */}
         <div className='mb-10 text-center'>

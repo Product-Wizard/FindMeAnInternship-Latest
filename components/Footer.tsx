@@ -70,7 +70,7 @@ const Footer = () => (
           </li> */}
           <li>
             <Link to='/jobs' className='hover:text-brand-teal'>
-              Browse Jobs
+              Browse Internships
             </Link>
           </li>
           <li>
@@ -81,7 +81,7 @@ const Footer = () => (
         </ul>
       </div>
 
-      <div>
+      {/* <div>
         <h4 className='text-white font-bold mb-4'>Resources</h4>
         <ul className='space-y-2 text-sm'>
           <li className='hover:text-brand-teal cursor-pointer'>
@@ -94,18 +94,18 @@ const Footer = () => (
             Resume Builder
           </li>
         </ul>
-      </div>
+      </div> */}
 
       <div>
         <h4 className='text-white font-bold mb-4'>Contact</h4>
         <div className='flex items-center gap-2 text-sm mb-2'>
           <Mail className='w-4 h-4' />
-          <span>hello@findmeaninternship.org</span>
+          <span>support@findmeaninternship.com</span>
         </div>
-        <div className='flex items-center gap-2 text-sm'>
+        {/* <div className='flex items-center gap-2 text-sm'>
           <MapPin className='w-4 h-4' />
           <span>123 Opportunity Blvd, Tech City</span>
-        </div>
+        </div> */}
       </div>
     </div>
     <div className='max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-slate-700 text-center text-xs'>
