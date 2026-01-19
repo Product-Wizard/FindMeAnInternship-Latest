@@ -109,7 +109,7 @@ const Footer = () => (
       </div>
     </div>
     <div className='max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-slate-700 text-center text-xs'>
-      © 2024 Find Me an Internship. All rights reserved.
+      © 2026 Find Me an Internship. All rights reserved.
     </div>
   </footer>
 );

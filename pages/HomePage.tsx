@@ -149,7 +149,8 @@ const HomePage = () => (
             </div>
             <div className='mt-8'>
               <Link
-                to='/impact'
+                // to='/impact'
+                to='/'
                 className='text-brand-teal font-bold hover:underline flex items-center gap-2'
               >
                 Goals <ArrowRight className='w-4 h-4' />
