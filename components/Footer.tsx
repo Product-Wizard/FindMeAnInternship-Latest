@@ -100,7 +100,7 @@ const Footer = () => (
         <h4 className='text-white font-bold mb-4'>Contact</h4>
         <div className='flex items-center gap-2 text-sm mb-2'>
           <Mail className='w-4 h-4' />
-          <span>support@findmeaninternship.com</span>
+          <span>info@findmeaninternship.com</span>
         </div>
         {/* <div className='flex items-center gap-2 text-sm'>
           <MapPin className='w-4 h-4' />
