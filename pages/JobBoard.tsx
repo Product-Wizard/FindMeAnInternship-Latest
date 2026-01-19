@@ -159,14 +159,15 @@ const JobBoard = () => {
         // For this demo, I'll filter by specific cities or exclude Remote/Ibadan
         return (fetchJobQuery?.data?.data || []).filter(
           (job) =>
-            !job.location.includes("Ibadan") &&
-            job.type !== "remote" &&
-            (job.location.includes("UK") ||
-              job.location.includes("Sweden") ||
-              job.location.includes("Germany") ||
-              job.location.includes("us") ||
-              job.location.includes("US") ||
-              job.location.includes("NY"))
+            (!job.location.includes("Ibadan") &&
+              job.type !== "remote" &&
+              (job.location.includes("UK") ||
+                job.location.includes("Sweden") ||
+                job.location.includes("Germany") ||
+                job.location.includes("us") ||
+                job.location.includes("US") ||
+                job.location.includes("NY"))) ||
+            job.locale_type === "international"
         );
       case "remote":
         return (fetchJobQuery?.data?.data || []).filter(
@@ -338,7 +339,7 @@ const JobBoard = () => {
             </div>
           )}
 
-          <div className='bg-brand-teal/5 p-6 rounded-xl border border-brand-teal/20'>
+          <div className=' mt-20 bg-brand-teal/5 p-6 rounded-xl border border-brand-teal/20'>
             <h3 className='font-bold text-brand-dark mb-2'>
               Need a Resume Check?
             </h3>
