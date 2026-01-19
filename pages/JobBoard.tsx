@@ -6,7 +6,8 @@ import { JobSlider } from "@/components/JobSlider";
 import JobLoactionPicker from "@/components/JobLoactionPicker";
 import JobService from "@/ApiService/JobSevice";
 import { JobCategoryType, JobLocalityType } from "@/types/model/Job.model";
-const PER_PAGE = 10;
+import Paginator from "@/components/Paginator";
+const PER_PAGE = 30;
 const JobBoard = () => {
   const [activeTab, setActiveTab] = useState<JobLocalityType>("");
   const [jobCategory, setJobCategory] = useState<JobCategoryType>("");
@@ -279,29 +280,29 @@ const JobBoard = () => {
                 </div>
               </div>
             </div>
-
-            {/* Job List */}
-            {catergoryJobs.length > 0 ? (
-              <div className='lg:col-span-3 space-y-4'>
-                {(catergoryJobs || []).map((job) => {
-                  return (
-                    <div
-                      key={job.id}
-                      className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'
-                    >
-                      <div className='flex justify-between items-start mb-2'>
-                        <div>
-                          <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
-                            {job.title}
-                          </h3>
-                          <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
-                            <Building2 className='w-3 h-3' /> {job.company}
-                            <span className='w-1 h-1 bg-slate-300 rounded-full'></span>
-                            <MapPin className='w-3 h-3' /> {job.location}
-                          </div>
+          </div>
+          {/* Job List */}
+          {catergoryJobs.length > 0 ? (
+            <div className='lg:col-span-3 space-y-4'>
+              {(catergoryJobs || []).map((job) => {
+                return (
+                  <div
+                    key={job.id}
+                    className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'
+                  >
+                    <div className='flex justify-between items-start mb-2'>
+                      <div>
+                        <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
+                          {job.title}
+                        </h3>
+                        <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
+                          <Building2 className='w-3 h-3' /> {job.company}
+                          <span className='w-1 h-1 bg-slate-300 rounded-full'></span>
+                          <MapPin className='w-3 h-3' /> {job.location}
                         </div>
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium 
+                      </div>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium 
                       ${
                         job.type === "remote"
                           ? "bg-purple-100 text-purple-700"
@@ -309,45 +310,50 @@ const JobBoard = () => {
                           ? "bg-blue-100 text-blue-700"
                           : "bg-green-100 text-green-700"
                       }`}
-                        >
-                          {job.type}
-                        </span>
-                      </div>
-                      <p className='text-slate-600 text-sm mb-4 line-clamp-2'>
-                        {job.description}
-                      </p>
-                      <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
-                        <span className='text-xs text-slate-400'>
-                          Posted {job.postedDate}
-                        </span>
-                        <button className='text-sm font-bold text-brand-teal hover:text-brand-dark'>
-                          Apply Now &rarr;
-                        </button>
-                      </div>
+                      >
+                        {job.type}
+                      </span>
                     </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className='p-12 text-center text-slate-400'>
-                {(fetchJobQuery?.data?.data || []).length > 0
-                  ? `No jobs found matching your filters. "${jobCategory}" on this page `
-                  : "no jobs available on this page"}
-              </div>
-            )}
+                    <p className='text-slate-600 text-sm mb-4 line-clamp-2'>
+                      {job.description}
+                    </p>
+                    <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
+                      <span className='text-xs text-slate-400'>
+                        Posted {job.postedDate}
+                      </span>
+                      <button className='text-sm font-bold text-brand-teal hover:text-brand-dark'>
+                        Apply Now &rarr;
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className='p-12 text-center text-slate-400'>
+              {(fetchJobQuery?.data?.data || []).length > 0
+                ? `No jobs found matching your filters. "${jobCategory}" on this page `
+                : "no jobs available on this page"}
+            </div>
+          )}
 
-            <div className='bg-brand-teal/5 p-6 rounded-xl border border-brand-teal/20'>
-              <h3 className='font-bold text-brand-dark mb-2'>
-                Need a Resume Check?
-              </h3>
-              <p className='text-sm text-slate-600 mb-4'>
-                Our AI Career Coach can review your resume tips instantly.
-              </p>
-              <div className='text-brand-teal text-sm font-bold flex items-center gap-1'>
-                Use the chat button <ArrowRight className='w-4 h-4' />
-              </div>
+          <div className='bg-brand-teal/5 p-6 rounded-xl border border-brand-teal/20'>
+            <h3 className='font-bold text-brand-dark mb-2'>
+              Need a Resume Check?
+            </h3>
+            <p className='text-sm text-slate-600 mb-4'>
+              Our AI Career Coach can review your resume tips instantly.
+            </p>
+            <div className='text-brand-teal text-sm font-bold flex items-center gap-1'>
+              Use the chat button <ArrowRight className='w-4 h-4' />
             </div>
           </div>
+
+          <Paginator
+            currentPage={page}
+            handlePageChange={setPage}
+            pagination={fetchJobQuery?.data?.pagination}
+          />
         </div>
       </div>
     </div>

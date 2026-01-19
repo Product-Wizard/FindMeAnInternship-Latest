@@ -2,6 +2,8 @@ interface StandardServerResponse<T> {
   error: boolean;
   data: T;
   message: string;
+  pagination?: pagination
+  token?: string;
 }
 
 export interface ApiPaginationQuery {
