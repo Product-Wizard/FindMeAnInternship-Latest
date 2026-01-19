@@ -4,6 +4,7 @@ import { HashRouter, BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
+import "./index.css";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {

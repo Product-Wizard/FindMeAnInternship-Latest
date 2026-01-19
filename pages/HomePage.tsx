@@ -108,38 +108,40 @@ const HomePage = () => (
             <div className='space-y-6'>
               <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
                 <p className='text-slate-600 italic mb-4'>
-                  "I applied to 50 jobs with no luck. Find Me an Internship
+                  {/* "I applied to 50 jobs with no luck. Find Me an Internship
                   connected me with a mentor and a 3-month role that turned into
-                  a full-time offer."
+                  a full-time offer." */}
+                  ”Dominion was my first real workplace. Find Me an Internship
+                  verified the role, helped me package my skills clearly, and I
+                  landed the internship. By my second month, I was trusted to
+                  own weekly reporting and present updates to the team.”
                 </p>
                 <div className='flex items-center gap-3'>
                   <div className='w-10 h-10 bg-brand-teal rounded-full flex items-center justify-center text-white font-bold'>
-                    JS
+                    E
                   </div>
                   <div>
-                    <div className='font-bold text-brand-dark'>
-                      Sarah Jenkins
-                    </div>
+                    <div className='font-bold text-brand-dark'>Evangel</div>
                     <div className='text-xs text-slate-500'>
-                      Marketing Intern @ TechFlow
+                      Intern, Dominion
                     </div>
                   </div>
                 </div>
               </div>
               <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
                 <p className='text-slate-600 italic mb-4'>
-                  "As a small NGO, finding passionate help is hard. This
-                  platform brought us three incredible students who revamped our
-                  entire outreach strategy."
+                  ”We needed support fast for a 6-week project. They found us
+                  two interns, both reliable, both coachable, and we would hire
+                  from this pipeline again.”
                 </p>
                 <div className='flex items-center gap-3'>
                   <div className='w-10 h-10 bg-brand-dark rounded-full flex items-center justify-center text-white font-bold'>
-                    DL
+                    BF
                   </div>
                   <div>
-                    <div className='font-bold text-brand-dark'>David Lee</div>
+                    <div className='font-bold text-brand-dark'>Bisi Falade</div>
                     <div className='text-xs text-slate-500'>
-                      Director @ GreenEarth NGO
+                      Program Manager, Community Health NGO
                     </div>
                   </div>
                 </div>
@@ -150,7 +152,7 @@ const HomePage = () => (
                 to='/impact'
                 className='text-brand-teal font-bold hover:underline flex items-center gap-2'
               >
-                See our full impact report <ArrowRight className='w-4 h-4' />
+                Goals <ArrowRight className='w-4 h-4' />
               </Link>
             </div>
           </div>

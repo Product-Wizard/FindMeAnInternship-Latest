@@ -94,12 +94,23 @@ const GetInvolvedPage = () => {
               <input
                 name='email'
                 type='email'
-                placeholder='University Email'
+                placeholder='Email'
                 className='w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-teal outline-none'
                 {...studentForm.register("email")}
               />
               <FormErrorMessage
                 message={studentForm?.formState?.errors?.email?.message}
+              />
+              <input
+                type='text'
+                placeholder='Course of study'
+                className='w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-teal outline-none'
+                {...studentForm.register("course_of_study")}
+              />
+              <FormErrorMessage
+                message={
+                  studentForm?.formState?.errors?.course_of_study?.message
+                }
               />
               <select
                 name='year_of_study'
@@ -152,12 +163,21 @@ const GetInvolvedPage = () => {
               />
               <input
                 type='email'
-                placeholder='Work Email'
+                placeholder='Email Address'
                 className='w-full p-3 bg-white/5 rounded-lg border border-white/10 focus:ring-2 focus:ring-brand-accent outline-none text-white placeholder-slate-400'
                 {...organizationForm.register("email")}
               />
               <FormErrorMessage
                 message={organizationForm?.formState?.errors?.email?.message}
+              />
+              <input
+                type='text'
+                placeholder='Industry'
+                className='w-full p-3 bg-white/5 rounded-lg border border-white/10 focus:ring-2 focus:ring-brand-accent outline-none text-white placeholder-slate-400'
+                {...organizationForm.register("industry")}
+              />
+              <FormErrorMessage
+                message={organizationForm?.formState?.errors?.industry?.message}
               />
               <select
                 placeholder='Company Size'

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GraduationCap, Building2, Menu, X } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
-
+import Logo from "@/assets/logo.png";
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -28,6 +28,7 @@ const Navbar = () => {
   return (
     <nav className='sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        {/* <div className='w-screen mx-auto overflow-hidden px-4 sm:px-6 lg:px-8'> */}
         <div className='flex justify-between h-20 items-center'>
           {/* Logo */}
           <Link to='/' className='flex items-center gap-2 group'>
@@ -46,9 +47,9 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className=' lg:flex sm:hidden gap-8 items-center'>
+          <div className='hide show-nav-bar gap-8 items-center'>
             <NavItem to='/' label='Home' />
-            <NavItem to='/impact' label='Our Impact' />
+            {/* <NavItem to='/impact' label='Our Impact' /> */}
             <NavItem to='/jobs' label='Find Opportunities' />
             <NavItem to='/resources' label='Resources & Blog' />
             <Link

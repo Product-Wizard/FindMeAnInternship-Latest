@@ -5,5 +5,6 @@ export interface OrganizationModelInterface {
   id: number;
   email: string;
   company_name: string;
+  industry: string;
   company_size: company_size;
 }

@@ -7,7 +7,7 @@ function FormErrorMessage({ message }: FormErrorMessageInterface) {
   if (message)
     return (
       <div>
-        <p className='text-red-700 text-sm font-bold'>
+        <p className='text-red-500 text-[10px] font-bold'>
           {" "}
           {message.replaceAll("_", " ")}
         </p>

@@ -7,6 +7,7 @@ import {
   Mail,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { FaWhatsapp, FaTiktok } from "react-icons/fa";
 
 const Footer = () => (
   <footer className='bg-brand-dark text-slate-300 py-12'>
@@ -20,10 +21,37 @@ const Footer = () => (
           organizations.
         </p>
         <div className='flex gap-4'>
-          <Facebook className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
-          <Twitter className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
-          <Linkedin className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
-          <Instagram className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
+          {/* <Facebook className='w-5 h-5 hover:text-brand-teal cursor-pointer' /> */}
+          <a
+            href='https://x.com/TheInternPost_'
+            className='border-none no-underline'
+            target='blank'
+          >
+            <Twitter className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
+          </a>
+          <a
+            href='https://wa.me/message/GQMOHAWMJBM6H1'
+            className='border-none no-underline'
+            target='blank'
+          >
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            <FaWhatsapp className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
+          </a>
+          <a
+            href='http://www.linkedin.com/in/findmeaninternship'
+            className='border-none no-underline'
+            target='blank'
+          >
+            <Linkedin className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
+          </a>
+          <a
+            href='https://www.tiktok.com/@theinternpost_ng0'
+            className='border-none no-underline'
+            target='blank'
+          >
+            <FaTiktok className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
+          </a>
+          {/* <Instagram className='w-5 h-5 hover:text-brand-teal cursor-pointer' /> */}
         </div>
       </div>
 
@@ -35,11 +63,11 @@ const Footer = () => (
               Home
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/impact' className='hover:text-brand-teal'>
               Our Impact
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/jobs' className='hover:text-brand-teal'>
               Browse Jobs
