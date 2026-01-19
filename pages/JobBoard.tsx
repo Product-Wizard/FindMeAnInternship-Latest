@@ -233,7 +233,7 @@ const JobBoard = () => {
             </select> */}
           </div>
 
-          <div className='grid lg:grid-cols-4 gap-8'>
+          <div className='grid lg:grid-cols-4 gap-8 mb-12'>
             {/* Sidebar Filters */}
             <div className='lg:col-span-1 space-y-6'>
               <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
@@ -281,6 +281,7 @@ const JobBoard = () => {
               </div>
             </div>
           </div>
+
           {/* Job List */}
           {catergoryJobs.length > 0 ? (
             <div className='lg:col-span-3 space-y-4'>
