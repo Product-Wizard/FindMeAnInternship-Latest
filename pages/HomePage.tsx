@@ -183,7 +183,7 @@ const HomePage = () => (
     </section>
 
     <section>
-      <div className='mt-16'>
+      <div className='mt-16 px-5'>
         <div className='text-center mb-12'>
           <h3 className='text-3xl font-bold text-brand-dark mb-4'>
             Volunteer & Give Back
