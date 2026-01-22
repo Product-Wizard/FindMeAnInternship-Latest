@@ -14,10 +14,15 @@ const JobQuryMutationKeys = Object.freeze({
   deleteJobMutationKeys: [ "delete_job" ],
 })
 
+const JobApplicationQuryMutationKeys = Object.freeze({
+  createJobApplicationMutationKeys: [ "create_Job_application" ],
+
+})
+
 const ApiQueryMutationKeys = Object.freeze({
   AuthQuryMutationKeys,
   JobQuryMutationKeys,
-
+  JobApplicationQuryMutationKeys,
 })
 
 export default ApiQueryMutationKeys

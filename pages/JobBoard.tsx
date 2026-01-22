@@ -1,16 +1,20 @@
 import { useState } from "react";
-
 import { Building2, ArrowRight, MapPin } from "lucide-react";
-import { Job } from "@/types";
 import { JobSlider } from "@/components/JobSlider";
-import JobLoactionPicker from "@/components/JobLoactionPicker";
+import JobTrainingScopePicker from "@/components/JobTrainingScopePicker";
 import JobService from "@/ApiService/JobSevice";
-import { JobCategoryType, JobLocalityType } from "@/types/model/Job.model";
+import {
+  JobCategoryType,
+  JobTrainigScope,
+  JobModelInterface,
+} from "@/types/model/Job.model";
 import Paginator from "@/components/Paginator";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
-const PER_PAGE = 30;
+import JobApplicationModal from "@/components/JobApplicationModal";
+
+const PER_PAGE = 20;
 const JobBoard = () => {
-  const [activeTab, setActiveTab] = useState<JobLocalityType>("");
+  const [activeTab, setActiveTab] = useState<JobTrainigScope>("");
   const [jobCategory, setJobCategory] = useState<JobCategoryType>("");
   const [page, setPage] = useState(1);
 
@@ -21,28 +25,29 @@ const JobBoard = () => {
 
   const getFilteredJobs = () => {
     switch (activeTab) {
-      case "local":
+      case "siwes_or_general":
         return (fetchJobQuery?.data?.data || []).filter(
-          (job) => job.location.includes("local") || job.locale_type == "local"
+          (job) =>
+            job.location.includes("local") ||
+            job.job_training_scope == "siwes_or_general"
         );
       case "international":
         // Rudimentary check for international: Not Remote and Not Ibadan and Not Nigeria (unless explicitly Ibadan)
         // For this demo, I'll filter by specific cities or exclude Remote/Ibadan
         return (fetchJobQuery?.data?.data || []).filter(
           (job) =>
-            (!job.location.includes("Ibadan") &&
-              job.type !== "remote" &&
-              (job.location.includes("UK") ||
-                job.location.includes("Sweden") ||
-                job.location.includes("Germany") ||
-                job.location.includes("us") ||
-                job.location.includes("US") ||
-                job.location.includes("NY"))) ||
-            job.locale_type === "international"
+            // job.type !== "remote" &&
+            // job.location.includes("UK") ||
+            // job.location.includes("Sweden") ||
+            // job.location.includes("Germany") ||
+            // job.location.includes("us") ||
+            // job.location.includes("US") ||
+            // job.location.includes("NY") ||
+            job.job_training_scope === "international"
         );
-      case "remote":
+      case "graduate_training":
         return (fetchJobQuery?.data?.data || []).filter(
-          (job) => job.type === "remote" || job.locale_type === "international"
+          (job) => job.job_training_scope === "graduate_training"
         );
       default:
         return fetchJobQuery?.data?.data || [];
@@ -61,11 +66,11 @@ const JobBoard = () => {
   const catergoryJobs = filterJobsByCategory();
 
   return (
-    <div className='min-h-screen bg-slate-50 py-12'>
+    <div className='min-h-screen bg-slate-50 py-12 overflow-x-hidden'>
       {fetchJobQuery.isFetching || fetchJobQuery.isLoading ? (
         <BlockLoadingIndicator />
       ) : null}
-      <div className='max-w-7xl mx-auto px-4'>
+      <div className=' w-full lg:max-w-7xl mx-auto px-4'>
         {/* Header */}
         <div className='mb-10 text-center'>
           <h2 className='text-4xl font-bold text-brand-dark mb-4'>
@@ -80,8 +85,8 @@ const JobBoard = () => {
 
         {/* --- Featured Opportunities Slider Section --- */}
         <section className='mb-16'>
-          <div className='flex flex-col items-center mb-8'>
-            <JobLoactionPicker
+          <div className='mb-8'>
+            <JobTrainingScopePicker
               handleOnClickLoactionPicker={setActiveTab}
               location={activeTab}
             />
@@ -145,12 +150,18 @@ const JobBoard = () => {
                       className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'
                     >
                       <option value=''>All</option>
-                      <option value='tech'>Technology</option>
+                      <option value='stem'>Stem</option>
+                      <option value='humanities_and_art'>Humanities/Art</option>
+                      <option value='commercial_and_finance'>
+                        Commercial/Finance
+                      </option>
+                      <option value='non_Profit'>Non-Profit</option>
+                      {/* <option value='tech'>Technology</option>
                       <option value='marketing'>Marketing</option>
                       <option value='finance'>Finance</option>
                       <option value='design'>Design</option>
                       <option value='admin'>Admin</option>
-                      <option value='research'>Research</option>
+                      <option value='research'>Research</option> */}
                     </select>
                   </div>
                 </div>
@@ -162,48 +173,7 @@ const JobBoard = () => {
           {catergoryJobs.length > 0 ? (
             <div className='lg:col-span-3 space-y-4'>
               {(catergoryJobs || []).map((job) => {
-                return (
-                  <div
-                    key={job.id}
-                    className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'
-                  >
-                    <div className='flex justify-between items-start mb-2'>
-                      <div>
-                        <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
-                          {job.title}
-                        </h3>
-                        <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
-                          <Building2 className='w-3 h-3' /> {job.company}
-                          <span className='w-1 h-1 bg-slate-300 rounded-full'></span>
-                          <MapPin className='w-3 h-3' /> {job.location}
-                        </div>
-                      </div>
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium 
-                      ${
-                        job.type === "remote"
-                          ? "bg-purple-100 text-purple-700"
-                          : job.type === "hybrid"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
-                      >
-                        {job.type}
-                      </span>
-                    </div>
-                    <p className='text-slate-600 text-sm mb-4 line-clamp-2'>
-                      {job.description}
-                    </p>
-                    <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
-                      <span className='text-xs text-slate-400'>
-                        Posted {job.postedDate}
-                      </span>
-                      <button className='text-sm font-bold text-brand-teal hover:text-brand-dark'>
-                        Apply Now &rarr;
-                      </button>
-                    </div>
-                  </div>
-                );
+                return <JobItemList job={job} />;
               })}
             </div>
           ) : (
@@ -222,7 +192,8 @@ const JobBoard = () => {
               Our AI Career Coach can review your resume tips instantly.
             </p>
             <div className='text-brand-teal text-sm font-bold flex items-center gap-1'>
-              Use the chat button <ArrowRight className='w-4 h-4' />
+              Use the chat button at the bottom right corner{" "}
+              <ArrowRight className='w-4 h-4 rotate-45' />
             </div>
           </div>
 
@@ -236,5 +207,58 @@ const JobBoard = () => {
     </div>
   );
 };
+
+function JobItemList({ job }: { job: JobModelInterface }) {
+  const [openJobApplication, setOpenJobApplication] = useState(false);
+  return (
+    <div
+      key={job.id}
+      className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'
+    >
+      {openJobApplication ? (
+        <JobApplicationModal
+          job={job}
+          onClose={() => setOpenJobApplication(false)}
+        />
+      ) : null}
+      <div className='flex justify-between items-start mb-2'>
+        <div>
+          <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
+            {job.title}
+          </h3>
+          <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
+            <Building2 className='w-3 h-3' /> {job.company}
+            <span className='w-1 h-1 bg-slate-300 rounded-full'></span>
+            <MapPin className='w-3 h-3' /> {job.location}
+          </div>
+        </div>
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-medium 
+                      ${
+                        job.type === "remote"
+                          ? "bg-purple-100 text-purple-700"
+                          : job.type === "hybrid"
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+        >
+          {job.type}
+        </span>
+      </div>
+      <p className='text-slate-600 text-sm mb-4 line-clamp-2'>
+        {job.description}
+      </p>
+      <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
+        <span className='text-xs text-slate-400'>Posted {job.postedDate}</span>
+        <button
+          onClick={() => setOpenJobApplication(true)}
+          className='text-sm font-bold text-brand-teal hover:text-brand-dark'
+        >
+          Apply Now &rarr;
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default JobBoard;
