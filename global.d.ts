@@ -17,7 +17,8 @@ interface JobQuery {
   company?: string;
   location?: string;
   type?: string;
-  category?: string;
+  category_by_user?: string;
+  state_by_user?: string;
   link?: string;
   description?: string;
   remote?: string;

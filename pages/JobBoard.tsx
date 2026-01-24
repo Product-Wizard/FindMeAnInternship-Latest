@@ -13,11 +13,13 @@ import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
 import JobApplicationModal from "@/components/JobApplicationModal";
 import { useQueryClient } from "@tanstack/react-query";
 import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
+import NigerianStates from "@/consts/NigerianStates";
 
 const PER_PAGE = 20;
 const JobBoard = () => {
   const queryClient = useQueryClient();
   const [remote, setRemote] = useState(false);
+  const [state, setState] = useState("");
   const [all, setAll] = useState(false);
   const [onSite, setOnSite] = useState(false);
   const [hybrid, setHybrid] = useState(false);
@@ -38,7 +40,8 @@ const JobBoard = () => {
   const fetchJobQuery = JobService.fetchJobsServiceQuery({
     perPage: PER_PAGE,
     page: page,
-    category: jobCategory,
+    category_by_user: jobCategory,
+    state_by_user: state,
     company: search,
     description: search,
     link: search,
@@ -81,12 +84,16 @@ const JobBoard = () => {
   // Reset pagination when filters change
   const trigerFilterSearch = () => {
     setPage(1);
-    queryClient.invalidateQueries({
-      queryKey: [
-        ...ApiQueryMutationKeys.JobQuryMutationKeys.getJobsQueryKeys,
-        1,
-      ],
-    });
+    setTimeout(
+      () =>
+        queryClient.invalidateQueries({
+          queryKey: [
+            ...ApiQueryMutationKeys.JobQuryMutationKeys.getJobsQueryKeys,
+            1,
+          ],
+        }),
+      400
+    );
   };
 
   const sliderJobs = getFilteredJobs();
@@ -106,7 +113,7 @@ const JobBoard = () => {
 
   return (
     <div className='min-h-screen bg-slate-50 py-12 overflow-x-hidden'>
-      {fetchJobQuery.isFetching ? <BlockLoadingIndicator /> : null}
+      {fetchJobQuery?.isFetching ? <BlockLoadingIndicator /> : null}
       <div className=' w-full lg:max-w-7xl mx-auto px-4'>
         {/* Header */}
         <div className='mb-10 text-center'>
@@ -147,6 +154,7 @@ const JobBoard = () => {
 
           <div className='grid lg:grid-cols-4 gap-8 mb-12'>
             {/* Sidebar Filters */}
+
             <div className='lg:col-span-1 space-y-6'>
               <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
                 <div className='space-y-4'>
@@ -196,24 +204,7 @@ const JobBoard = () => {
                       </label>
                     </div>
                   </div>
-                  <div>
-                    <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
-                      Category
-                    </label>
-                    <select
-                      value={jobCategory}
-                      onChange={(e) => setJobCategory(e.target.value as any)}
-                      className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'
-                    >
-                      <option value=''>All</option>
-                      <option value='stem'>Stem</option>
-                      <option value='humanities_and_art'>Humanities/Art</option>
-                      <option value='commercial_and_finance'>
-                        Commercial/Finance
-                      </option>
-                      <option value='non_profit'>Non-Profit</option>
-                    </select>
-                  </div>
+
                   <div className='flex-1 relative'>
                     <Search className='absolute left-3 top-2.5 w-4 h-4 text-slate-400' />
                     <form
@@ -243,12 +234,64 @@ const JobBoard = () => {
                 </div>
               </div>
             </div>
+            {/* job category and state */}
+            <div className=' flex items-end justify-start'>
+              {/* job category */}
+              <div className='mr-3'>
+                <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
+                  Category
+                </label>
+                <select
+                  value={jobCategory}
+                  onChange={(e) => {
+                    setJobCategory(e.target.value as any);
+                    trigerFilterSearch();
+                  }}
+                  className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'
+                >
+                  <option value=''>All</option>
+                  <option value='stem'>Stem</option>
+                  <option value='humanities_and_art'>Humanities/Art</option>
+                  <option value='commercial_and_finance'>
+                    Commercial/Finance
+                  </option>
+                  <option value='non_profit'>Non-Profit</option>
+                </select>
+              </div>
+              {/* job state */}
+              <div>
+                <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
+                  state
+                </label>
+                <select
+                  value={state}
+                  onChange={(e) => {
+                    setState(e.target.value as any);
+                    trigerFilterSearch();
+                  }}
+                  className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'
+                >
+                  <option value=''>All State</option>
+                  {NigerianStates.getStates().map((item) => {
+                    return (
+                      <option
+                        key={item}
+                        className='capitalize'
+                        value={item.toLowerCase()}
+                      >
+                        {item}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
           </div>
 
           {/* Job List */}
-          {(fetchJobQuery.data.data || []).length > 0 ? (
+          {(fetchJobQuery?.data?.data || []).length > 0 ? (
             <div className='lg:col-span-3 space-y-4'>
-              {(fetchJobQuery.data.data || []).map((job) => {
+              {(fetchJobQuery?.data?.data || []).map((job) => {
                 return <JobItemList job={job} />;
               })}
             </div>
