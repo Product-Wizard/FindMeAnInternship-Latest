@@ -9,6 +9,9 @@ interface StandardServerResponse<T> {
 export interface ApiPaginationQuery {
   page: number;
   perPage: number;
+}
+
+interface JobQuery {
   type?: string;
   title?: string;
   company?: string;
@@ -17,6 +20,9 @@ export interface ApiPaginationQuery {
   category?: string;
   link?: string;
   description?: string;
+  remote?: string;
+  on_site?: string;
+  hybrid?: string;
 }
 
 export interface pagination {

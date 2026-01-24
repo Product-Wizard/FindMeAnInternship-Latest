@@ -78,6 +78,11 @@ const Footer = () => (
               Resources
             </Link>
           </li>
+          <li>
+            <Link to='/involved/#volunteer' className='hover:text-brand-teal'>
+              Volunteer
+            </Link>
+          </li>
         </ul>
       </div>
 

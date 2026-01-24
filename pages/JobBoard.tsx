@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Building2, ArrowRight, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Building2, ArrowRight, MapPin, Search } from "lucide-react";
 import { JobSlider } from "@/components/JobSlider";
 import JobTrainingScopePicker from "@/components/JobTrainingScopePicker";
 import JobService from "@/ApiService/JobSevice";
@@ -11,16 +11,42 @@ import {
 import Paginator from "@/components/Paginator";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
 import JobApplicationModal from "@/components/JobApplicationModal";
+import { useQueryClient } from "@tanstack/react-query";
+import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
 
 const PER_PAGE = 20;
 const JobBoard = () => {
+  const queryClient = useQueryClient();
+  const [remote, setRemote] = useState(false);
+  const [all, setAll] = useState(false);
+  const [onSite, setOnSite] = useState(false);
+  const [hybrid, setHybrid] = useState(false);
+  const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState<JobTrainigScope>("");
   const [jobCategory, setJobCategory] = useState<JobCategoryType>("");
   const [page, setPage] = useState(1);
 
+  const handleCheckAllClicked = (checkedState: boolean) => {
+    // if (!checkedState) return
+    setAll(checkedState);
+    setRemote(checkedState);
+    setOnSite(checkedState);
+    setHybrid(checkedState);
+    setAll(checkedState);
+  };
+
   const fetchJobQuery = JobService.fetchJobsServiceQuery({
     perPage: PER_PAGE,
     page: page,
+    category: jobCategory,
+    company: search,
+    description: search,
+    link: search,
+    location: search,
+    title: search,
+    on_site: onSite ? "on-site" : "",
+    remote: remote ? "remote" : "",
+    hybrid: hybrid ? "hybrid" : "",
   });
 
   const getFilteredJobs = () => {
@@ -32,18 +58,8 @@ const JobBoard = () => {
             job.job_training_scope == "siwes_or_general"
         );
       case "international":
-        // Rudimentary check for international: Not Remote and Not Ibadan and Not Nigeria (unless explicitly Ibadan)
-        // For this demo, I'll filter by specific cities or exclude Remote/Ibadan
         return (fetchJobQuery?.data?.data || []).filter(
-          (job) =>
-            // job.type !== "remote" &&
-            // job.location.includes("UK") ||
-            // job.location.includes("Sweden") ||
-            // job.location.includes("Germany") ||
-            // job.location.includes("us") ||
-            // job.location.includes("US") ||
-            // job.location.includes("NY") ||
-            job.job_training_scope === "international"
+          (job) => job.job_training_scope === "international"
         );
       case "graduate_training":
         return (fetchJobQuery?.data?.data || []).filter(
@@ -62,14 +78,35 @@ const JobBoard = () => {
     return jobs;
   };
 
+  // Reset pagination when filters change
+  const trigerFilterSearch = () => {
+    setPage(1);
+    queryClient.invalidateQueries({
+      queryKey: [
+        ...ApiQueryMutationKeys.JobQuryMutationKeys.getJobsQueryKeys,
+        1,
+      ],
+    });
+  };
+
   const sliderJobs = getFilteredJobs();
-  const catergoryJobs = filterJobsByCategory();
+  const categoryJobs = filterJobsByCategory();
+
+  useEffect(() => {
+    if (onSite && remote && hybrid) {
+      handleCheckAllClicked(true);
+    }
+    if (onSite === false && remote === false && hybrid === false) {
+      handleCheckAllClicked(false);
+    }
+    trigerFilterSearch();
+  }, [remote, onSite, hybrid]);
+
+  console.log("job category: ", jobCategory);
 
   return (
     <div className='min-h-screen bg-slate-50 py-12 overflow-x-hidden'>
-      {fetchJobQuery.isFetching || fetchJobQuery.isLoading ? (
-        <BlockLoadingIndicator />
-      ) : null}
+      {fetchJobQuery.isFetching ? <BlockLoadingIndicator /> : null}
       <div className=' w-full lg:max-w-7xl mx-auto px-4'>
         {/* Header */}
         <div className='mb-10 text-center'>
@@ -83,7 +120,6 @@ const JobBoard = () => {
           </p>
         </div>
 
-        {/* --- Featured Opportunities Slider Section --- */}
         <section className='mb-16'>
           <div className='mb-8'>
             <JobTrainingScopePicker
@@ -107,45 +143,65 @@ const JobBoard = () => {
                 positions on this page
               </p>
             </div>
-            {/* Simple Sort/Filter Mockup */}
-            {/* <select className='bg-white border border-slate-200 rounded-lg text-sm p-2 outline-none'>
-              <option>Most Recent</option>
-              <option>Relevance</option>
-            </select> */}
           </div>
 
           <div className='grid lg:grid-cols-4 gap-8 mb-12'>
             {/* Sidebar Filters */}
             <div className='lg:col-span-1 space-y-6'>
               <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
-                {/* <h3 className='font-bold text-brand-dark mb-4 flex items-center gap-2'>
-                  <Search className='w-4 h-4' /> Filters
-                </h3> */}
                 <div className='space-y-4'>
-                  {/* <div>
+                  <div>
                     <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
                       Location Type
                     </label>
+                    {/* job filter by job type */}
                     <div className='space-y-2'>
-                      {["Remote", "Hybrid", "On-site"].map((t) => (
-                        <label
-                          key={t}
-                          className='flex items-center gap-2 text-sm text-slate-700 cursor-pointer'
-                        >
-                          <input
-                            type='checkbox'
-                            className='rounded text-brand-teal focus:ring-brand-teal'
-                          />
-                          {t}
-                        </label>
-                      ))}
+                      <label className='flex items-center gap-2 text-sm text-slate-700 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          onChange={(e) =>
+                            handleCheckAllClicked(e.target.checked)
+                          }
+                          checked={all}
+                          className='rounded text-brand-teal focus:ring-brand-teal'
+                        />
+                        All
+                      </label>
+                      <label className='flex items-center gap-2 text-sm text-slate-700 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={remote}
+                          onChange={(e) => setRemote(e.target.checked)}
+                          className='rounded text-brand-teal focus:ring-brand-teal'
+                        />
+                        Remote
+                      </label>
+                      <label className='flex items-center gap-2 text-sm text-slate-700 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={hybrid}
+                          onChange={(e) => setHybrid(e.target.checked)}
+                          className='rounded text-brand-teal focus:ring-brand-teal'
+                        />
+                        Hybrid
+                      </label>
+                      <label className='flex items-center gap-2 text-sm text-slate-700 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          onChange={(e) => setOnSite(e.target.checked)}
+                          checked={onSite}
+                          className='rounded text-brand-teal focus:ring-brand-teal'
+                        />
+                        On-Site
+                      </label>
                     </div>
-                  </div> */}
+                  </div>
                   <div>
                     <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
                       Category
                     </label>
                     <select
+                      value={jobCategory}
                       onChange={(e) => setJobCategory(e.target.value as any)}
                       className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'
                     >
@@ -155,14 +211,34 @@ const JobBoard = () => {
                       <option value='commercial_and_finance'>
                         Commercial/Finance
                       </option>
-                      <option value='non_Profit'>Non-Profit</option>
-                      {/* <option value='tech'>Technology</option>
-                      <option value='marketing'>Marketing</option>
-                      <option value='finance'>Finance</option>
-                      <option value='design'>Design</option>
-                      <option value='admin'>Admin</option>
-                      <option value='research'>Research</option> */}
+                      <option value='non_profit'>Non-Profit</option>
                     </select>
+                  </div>
+                  <div className='flex-1 relative'>
+                    <Search className='absolute left-3 top-2.5 w-4 h-4 text-slate-400' />
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        trigerFilterSearch();
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <input
+                          type='text'
+                          placeholder='Search by title or company...'
+                          className='w-full pl-10 p-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-brand-teal'
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                          onBlur={trigerFilterSearch}
+                        />
+                        <button
+                          type='submit'
+                          className=' rounded-lg bg-brand-teal p-3 ml-1'
+                        >
+                          <Search className='w-4 h-4 text-white' />
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -170,16 +246,16 @@ const JobBoard = () => {
           </div>
 
           {/* Job List */}
-          {catergoryJobs.length > 0 ? (
+          {(fetchJobQuery.data.data || []).length > 0 ? (
             <div className='lg:col-span-3 space-y-4'>
-              {(catergoryJobs || []).map((job) => {
+              {(fetchJobQuery.data.data || []).map((job) => {
                 return <JobItemList job={job} />;
               })}
             </div>
           ) : (
             <div className='p-12 text-center text-slate-400'>
               {(fetchJobQuery?.data?.data || []).length > 0
-                ? `No jobs found matching your filters. "${jobCategory}" on this page `
+                ? `No jobs found matching your filters`
                 : "no jobs available on this page"}
             </div>
           )}

@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import api from "./api";
 import { CreateJobModelInterface, JobModelInterface } from "@/types/model/Job.model";
 import moment from "moment";
-import { ApiPaginationQuery, StandardServerResponse } from "@/global";
+import { ApiPaginationQuery, JobQuery, StandardServerResponse } from "@/global";
 
 const createJob = async (data: CreateJobModelInterface) => {
   const result = await api.post<typeof data, AxiosResponse<StandardServerResponse<JobModelInterface>>>("/job", data);
@@ -17,7 +17,7 @@ const updateJob = async (data: JobModelInterface) => {
   result.data.data.postedDate = moment(result.data.data.createdAt).fromNow();
   return result.data;
 }
-const getJobs = async (paginationParams: ApiPaginationQuery) => {
+const getJobs = async (paginationParams: (ApiPaginationQuery & JobQuery)) => {
   const keys = Object.keys(paginationParams);
   keys.map(key => !paginationParams[ key ] ? delete paginationParams[ key ] : null);
   const result = await api.get<any, AxiosResponse<StandardServerResponse<JobModelInterface[]>>>("/job", {

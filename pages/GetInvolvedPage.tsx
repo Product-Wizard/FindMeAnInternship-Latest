@@ -59,7 +59,7 @@ const GetInvolvedPage = () => {
     });
   };
   return (
-    <div className='min-h-screen bg-slate-50 py-12'>
+    <div className='min-h-screen bg-slate-50 py-12 scroll-smooth '>
       {createStudentMutation.isPending ? <BlockLoadingIndicator /> : null}
       {createOrganizationMutation.isPending ? <BlockLoadingIndicator /> : null}
       <div className='max-w-7xl mx-auto px-4'>
@@ -209,7 +209,7 @@ const GetInvolvedPage = () => {
         </div>
       </div>
 
-      <section>
+      <section id='volunteer'>
         {/* volunteer for students */}
         <div className='mt-16 px-5'>
           <div className='text-center mb-12'>
