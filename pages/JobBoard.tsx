@@ -248,7 +248,7 @@ const JobBoard = () => {
                   className='w-full bg-slate-50 border border-slate-200 rounded-lg text-sm p-2 focus:ring-2 focus:ring-brand-teal outline-none'
                 >
                   <option value=''>All</option>
-                  <option value='stem'>Stem</option>
+                  <option value='stem'>STEM</option>
                   <option value='humanities_and_art'>Humanities/Art</option>
                   <option value='commercial_and_finance'>
                     Commercial/Finance
