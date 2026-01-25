@@ -109,8 +109,6 @@ const JobBoard = () => {
     trigerFilterSearch();
   }, [remote, onSite, hybrid]);
 
-  console.log("job category: ", jobCategory);
-
   return (
     <div className='min-h-screen bg-slate-50 py-12 overflow-x-hidden'>
       {fetchJobQuery?.isFetching ? <BlockLoadingIndicator /> : null}

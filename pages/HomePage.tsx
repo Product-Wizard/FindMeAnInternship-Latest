@@ -4,10 +4,38 @@ import {
   CheckCircle2,
   HeartHandshake,
   TrendingUp,
+  Mail,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import NewsLetterSubscriberFormValidators from "@/formValidator/NewsLetterSubscriberFormValidator";
+import FormErrorMessage from "@/components/FormErrorMessage";
+import { CreateNewsLetterSubscriberModel } from "@/types/model/NewsLetterSubscriber.model";
+import NewsLetterSubscriberService from "@/ApiService/NewsLetterSubscriberSevice";
+import toast from "react-hot-toast";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 const HomePage = () => {
+  const newsLetterSubscriberMutation =
+    NewsLetterSubscriberService.createNewsLetterSubscriberServiceMutation();
+  const newsLetterSbscriberForm =
+    NewsLetterSubscriberFormValidators.createNewsLetterSubscriber();
+
+  //
+  const handleSubscribeNewsLetter = (data: CreateNewsLetterSubscriberModel) => {
+    newsLetterSubscriberMutation.mutate(data, {
+      onSuccess: (data) => {
+        toast.success(data.message, { duration: 5000 });
+        newsLetterSbscriberForm.reset();
+      },
+      onError: (error: any) => {
+        toast.error(
+          error?.response?.message ||
+            error.message ||
+            "newsletter subscription error"
+        );
+      },
+    });
+  };
   return (
     <div className='flex flex-col'>
       {/* Problem Section (Hero) */}
@@ -179,6 +207,68 @@ const HomePage = () => {
                 <span className='opacity-80'>Training Hours</span>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      {/* Newsletter Section - Redesigned Compact */}
+      <section className='py-8 bg-brand-teal text-white relative overflow-hidden'>
+        <div className='absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl'></div>
+        <div className='absolute bottom-0 right-0 w-32 h-32 bg-brand-accent/20 rounded-full translate-x-1/2 translate-y-1/2 blur-2xl'></div>
+
+        <div className='max-w-7xl mx-auto px-4 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12'>
+          <div className='w-full lg:flex-1'>
+            <div className='flex items-start gap-4'>
+              <div className='bg-white/20 p-2 md:p-3 rounded-lg shrink-0 mt-1'>
+                <Mail className='w-5 h-5 md:w-6 md:h-6 text-white' />
+              </div>
+              <div>
+                <h2 className='text-xl md:text-3xl font-bold leading-tight'>
+                  Don't Miss Your Next Big Break
+                </h2>
+                <p className='text-white/90 text-sm md:text-base max-w-xl mt-2'>
+                  Join 15,000+ students receiving curated internships,
+                  scholarship alerts, and career coaching tips directly to their
+                  inbox.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className='w-full lg:w-auto'>
+            <form
+              className='flex w-full lg:w-[420px] gap-3'
+              onSubmit={newsLetterSbscriberForm.handleSubmit(
+                handleSubscribeNewsLetter
+              )}
+            >
+              <div>
+                <input
+                  type='email'
+                  placeholder='Enter your email address'
+                  className='flex-1 px-4 py-3 h-12 rounded-lg bg-black/20 border border-white/10 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 shadow-inner text-sm transition-all hover:bg-black/30'
+                  {...newsLetterSbscriberForm.register("email")}
+                />
+                <FormErrorMessage
+                  message={
+                    newsLetterSbscriberForm?.formState?.errors?.email?.message
+                  }
+                />
+              </div>
+              <button
+                type='submit'
+                disabled={newsLetterSubscriberMutation?.isPending}
+                className='bg-brand-accent disabled:bg-opacity-75 h-12 hover:bg-brand-light text-brand-dark font-bold px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-xl hover:scale-105 whitespace-nowrap text-sm flex items-center justify-center'
+              >
+                {newsLetterSubscriberMutation?.isPending ? (
+                  <LoadingIndicator size='25px' />
+                ) : (
+                  "Subscribe"
+                )}
+              </button>
+            </form>
+            <p className='text-[11px] mt-2 opacity-75 text-center lg:text-right font-medium'>
+              No spam, just opportunities. Unsubscribe anytime.
+            </p>
           </div>
         </div>
       </section>

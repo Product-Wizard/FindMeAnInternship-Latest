@@ -49,7 +49,7 @@ function JobApplicationModal({
           }
           jobApplicationForm.reset();
           onClose();
-          setTimeout(() => Window.openPopup(job.link), 2000);
+          setTimeout(() => Window.newTab(job.link), 2000);
         },
         onError: (data: any) => {
           toast.error(

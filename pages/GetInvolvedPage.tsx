@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   GraduationCap,
   Building2,
@@ -15,8 +16,11 @@ import toast from "react-hot-toast";
 import FormErrorMessage from "@/components/FormErrorMessage";
 import { OrganizationModelInterface } from "@/types/model/organization.model";
 import Window from "@/utils/window.utils";
+import AppModal from "@/components/AppModal";
+import { InlineWidget } from "react-calendly";
 
 const GetInvolvedPage = () => {
+  const [openModal, setOpenModal] = useState(false);
   const studentForm = StudentFormValidators.createStudentForm();
   const organizationForm = OrganizationFormValidators.createOrganizationForm();
   const createStudentMutation = AuthService.createStudentServiceMutation();
@@ -48,6 +52,7 @@ const GetInvolvedPage = () => {
       onSuccess: (data) => {
         toast.success(data.message);
         organizationForm.reset();
+        setTimeout(() => setOpenModal(true), 1500);
       },
       onError: (data: any, variables) => {
         toast.error(
@@ -60,6 +65,13 @@ const GetInvolvedPage = () => {
   };
   return (
     <div className='min-h-screen bg-slate-50 py-12 scroll-smooth '>
+      <AppModal
+        headerText='Schedule meeting with us at Findmeanintenship'
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+      >
+        <InlineWidget url='https://calendly.com/findmeaninternship/30min' />
+      </AppModal>
       {createStudentMutation.isPending ? <BlockLoadingIndicator /> : null}
       {createOrganizationMutation.isPending ? <BlockLoadingIndicator /> : null}
       <div className='max-w-7xl mx-auto px-4'>
@@ -254,7 +266,7 @@ const GetInvolvedPage = () => {
               </ul>
               <button
                 onClick={() =>
-                  Window.openPopup(
+                  Window.newTab(
                     "https://airtable.com/appZEY5L7mjpgjj9G/pagOoTv2WbrUxr25S/form"
                   )
                 }
@@ -329,7 +341,7 @@ const GetInvolvedPage = () => {
               </ul>
               <button
                 onClick={() =>
-                  Window.openPopup(
+                  Window.newTab(
                     "https://airtable.com/appZEY5L7mjpgjj9G/pagmMAlkM24RVDwda/form"
                   )
                 }

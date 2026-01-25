@@ -17,10 +17,14 @@ const openPopup = (url: string) => {
   if (window.focus && popup) popup.focus();
   return popup;
 };
+const newTab = (url: string) => {
+  window.open(url, '_blank', 'noopener,noreferrer');
+};
 
 
 const Window = {
-  openPopup
+  newTab,
+  openPopup,
 }
 
 

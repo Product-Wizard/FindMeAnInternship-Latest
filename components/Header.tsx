@@ -76,7 +76,7 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className='md:hidden bg-white border-b border-slate-200 p-4 space-y-4 flex flex-col'>
           <NavItem to='/' label='Home' />
-          <NavItem to='/impact' label='Our Impact' />
+          {/* <NavItem to='/impact' label='Our Impact' /> */}
           <NavItem to='/jobs' label='Find Opportunities' />
           <NavItem to='/resources' label='Resources & Blog' />
           <NavItem to='/involved' label='Get Involved' />

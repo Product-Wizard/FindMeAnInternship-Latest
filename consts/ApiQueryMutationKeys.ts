@@ -19,10 +19,16 @@ const JobApplicationQuryMutationKeys = Object.freeze({
 
 })
 
+const NewsLetterSubscriberApiQuryMutationKeys = Object.freeze({
+  createNewsLetterSubscriberApiMutationKeys: [ "create_news_letter_subscriber" ],
+
+})
+
 const ApiQueryMutationKeys = Object.freeze({
   AuthQuryMutationKeys,
   JobQuryMutationKeys,
   JobApplicationQuryMutationKeys,
+  NewsLetterSubscriberApiQuryMutationKeys,
 })
 
 export default ApiQueryMutationKeys
