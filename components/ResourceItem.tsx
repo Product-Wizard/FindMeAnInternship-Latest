@@ -1,6 +1,6 @@
 import { ResourceModelInterface } from "@/types/model/resource.model";
 import { Calendar, Clock } from "lucide-react";
-import React from "react";
+import moment from "moment";
 
 interface ResourceItemProps {
   resource: ResourceModelInterface;
@@ -24,22 +24,23 @@ function ResourceItem({ resource, handleClick }: ResourceItemProps) {
           className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
         />
         <div className='absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-brand-teal uppercase tracking-wide'>
-          {resource.category}
+          {resource.category.replaceAll("_", " ")}
         </div>
       </div>
 
       <div className='p-6 flex flex-col flex-grow'>
         <div className='flex items-center gap-4 text-xs text-slate-400 mb-3'>
           <span className='flex items-center gap-1'>
-            <Calendar className='w-3 h-3' /> {resource.createdAt}
+            <Calendar className='w-3 h-3' />{" "}
+            {moment(resource.createdAt).format("YYYY-MM-D")}
           </span>
           <span className='flex items-center gap-1'>
             <Clock className='w-3 h-3' />{" "}
-            {Math.ceil(resource?.body.split("")?.length / 60) + "min read"}
+            {Math.ceil(resource?.body.split(" ")?.length / 300) + "min read"}
           </span>
         </div>
 
-        <h3 className='text-xl font-bold text-brand-dark mb-3 leading-tight group-hover:text-brand-teal transition-colors'>
+        <h3 className=' capitalize text-xl font-bold text-brand-dark mb-3 leading-tight group-hover:text-brand-teal transition-colors'>
           {resource.title}
         </h3>
 
@@ -48,10 +49,10 @@ function ResourceItem({ resource, handleClick }: ResourceItemProps) {
         </p>
 
         <div className='pt-4 border-t border-slate-50 flex items-center gap-2'>
-          <div className='w-8 h-8 bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-dark text-xs font-bold'>
+          <div className=' uppercase w-8 h-8 bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-dark text-xs font-bold'>
             {resource.author.charAt(0)}
           </div>
-          <span className='text-sm font-medium text-slate-700'>
+          <span className='capitalize text-sm font-medium text-slate-700'>
             {resource.author}
           </span>
         </div>

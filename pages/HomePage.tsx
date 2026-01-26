@@ -13,6 +13,7 @@ import { CreateNewsLetterSubscriberModel } from "@/types/model/NewsLetterSubscri
 import NewsLetterSubscriberService from "@/ApiService/NewsLetterSubscriberSevice";
 import toast from "react-hot-toast";
 import LoadingIndicator from "@/components/LoadingIndicator";
+import { NewsletterPopup } from "@/components/NewsletterPopup";
 
 const HomePage = () => {
   const newsLetterSubscriberMutation =
@@ -39,6 +40,7 @@ const HomePage = () => {
   return (
     <div className='flex flex-col'>
       {/* Problem Section (Hero) */}
+      <NewsletterPopup />
       <section className='relative bg-brand-dark text-white pt-20 pb-32 overflow-hidden'>
         <div className='absolute top-0 right-0 w-1/2 h-full bg-brand-teal/10 skew-x-12 translate-x-20'></div>
         <div className='max-w-7xl mx-auto px-4 relative z-10'>

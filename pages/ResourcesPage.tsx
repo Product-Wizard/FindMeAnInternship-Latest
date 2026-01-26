@@ -22,65 +22,6 @@ import Paginator from "@/components/Paginator";
 import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
 
-const INITIAL_ARTICLES: Article[] = [
-  {
-    id: "1",
-    title: "How to Ace Your First Internship Interview",
-    category: "Career Advice",
-    author: "Sarah Jenkins",
-    date: "Oct 12, 2024",
-    readTime: "5 min read",
-    imageUrl:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800",
-    summary:
-      "Nervous about your upcoming interview? Here are 5 proven strategies to make a lasting impression on recruiters.",
-    content: `
-      <p class="mb-4">Entering the workforce as a student can be intimidating, but the interview process doesn't have to be a nightmare. Here are five tips to help you stand out:</p>
-      
-      <h3 class="text-xl font-bold text-brand-dark mb-2">1. Research the Company</h3>
-      <p class="mb-4">Don't just look at the homepage. Read their recent news, check their social media, and understand their values. Mentioning a recent project they launched shows initiative.</p>
-
-      <h3 class="text-xl font-bold text-brand-dark mb-2">2. Practice the STAR Method</h3>
-      <p class="mb-4">When answering behavioral questions, use the Situation, Task, Action, Result structure. It keeps your answers concise and impactful.</p>
-
-      <h3 class="text-xl font-bold text-brand-dark mb-2">3. Ask Questions</h3>
-      <p class="mb-4">An interview is a two-way street. Ask about mentorship opportunities, team culture, and what a typical day looks like.</p>
-    `,
-  },
-  {
-    id: "2",
-    title: "The Future of Remote Work for Students",
-    category: "Industry Trends",
-    author: "David Lee",
-    date: "Sep 28, 2024",
-    readTime: "4 min read",
-    imageUrl:
-      "https://images.unsplash.com/photo-1593642532400-2682810df593?auto=format&fit=crop&q=80&w=800",
-    summary:
-      "Remote internships are opening doors for students worldwide. Learn how to navigate time zones and digital communication.",
-    content: `
-      <p class="mb-4">Remote work is no longer a temporary fix; it's a permanent shift in how we operate. For students, this means access to global opportunities without leaving campus.</p>
-      <p class="mb-4">However, remote internships require a different set of skills: self-discipline, proactive communication, and digital literacy. Tools like Slack, Zoom, and Asana are now just as important as your technical skills.</p>
-    `,
-  },
-  {
-    id: "3",
-    title: "Building a Portfolio with No Experience",
-    category: "Resume Tips",
-    author: "Emily Chen",
-    date: "Nov 01, 2024",
-    readTime: "6 min read",
-    imageUrl:
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
-    summary:
-      "No job history? No problem. Learn how to turn class projects and volunteer work into a winning portfolio.",
-    content: `
-      <p class="mb-4">The classic "you need experience to get experience" paradox. But here is a secret: experience doesn't always come from a 9-to-5 job.</p>
-      <p class="mb-4">Include your capstone projects, hackathons, and volunteer work. Treat them like professional engagements. Describe the problem you solved, the tools you used, and the outcome you achieved.</p>
-    `,
-  },
-];
-
 const PER_PAGE = 20;
 
 export const ResourcesPage: React.FC = () => {
@@ -128,14 +69,14 @@ export const ResourcesPage: React.FC = () => {
     setSearchParams({});
   };
 
-  const trigerRefreshSearch = () => {
+  const trigerFilterSearch = () => {
     setTimeout(
       () =>
         queryClient.invalidateQueries({
           queryKey: [
             ...ApiQueryMutationKeys.ResourceQuryMutationKeys
               .getResourcesQueryKeys,
-            page,
+            1,
           ],
         }),
       400
@@ -182,46 +123,67 @@ export const ResourcesPage: React.FC = () => {
     }
   };
 
-  const RenderList = () => (
-    <div className='animate-fade-in'>
-      {fetchResource.isFetching ? <BlockLoadingIndicator /> : null}
-      <div className='flex flex-col md:flex-row justify-between items-end mb-12 gap-4'>
-        <div>
-          <h2 className='text-4xl font-bold text-brand-dark mb-4'>
-            Resources & Blog
-          </h2>
-          <p className='text-slate-600 max-w-2xl'>
-            Expert advice, industry insights, and stories from the community to
-            help you navigate your career journey.
-          </p>
+  const RenderList = () => {
+    return (
+      <div className='animate-fade-in'>
+        {fetchResource.isFetching ? <BlockLoadingIndicator /> : null}
+        <div className='flex flex-col md:flex-row justify-between items-end mb-12 gap-4'>
+          <div>
+            <h2 className='text-4xl font-bold text-brand-dark mb-4'>
+              Resources & Blog
+            </h2>
+            <p className='text-slate-600 max-w-2xl'>
+              Expert advice, industry insights, and stories from the community
+              to help you navigate your career journey.
+            </p>
+          </div>
+        </div>
+        {/* search */}
+        {/* <div className='flex-1 relative mb-10'>
+          <Search className='absolute left-3 top-2.5 w-4 h-4 text-slate-400' />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              // document.getElementById("search-text-input")?.blur();
+              // if (!filter) return;
+              trigerFilterSearch();
+            }}
+          >
+            <div className='flex items-center'>
+              <input
+                type='text'
+                id='search-text-input'
+                placeholder='Search by title or author name'
+                className='w-full pl-10 p-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-brand-teal'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onBlur={() => {
+                  // if (!filter) return;
+                  trigerFilterSearch();
+                }}
+              />
+              <button
+                type='submit'
+                className=' rounded-lg bg-brand-teal p-3 ml-1'
+              >
+                <Search className='w-4 h-4 text-white' />
+              </button>
+            </div>
+          </form>
+        </div> */}
+
+        <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
+          {fetchResource?.data?.data?.map((resource) => (
+            <ResourceItem
+              handleClick={handleResourceClick}
+              key={resource.id}
+              resource={resource}
+            />
+          ))}
         </div>
       </div>
-      <div className='flex items-center mb-8'>
-        <input
-          type='text'
-          placeholder='Search articles by title, summary...'
-          className='w-full pl-10 p-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-brand-teal'
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onBlur={trigerRefreshSearch}
-        />
-        <button type='submit' className=' rounded-lg bg-brand-teal p-3 ml-1'>
-          <Search className='w-4 h-4 text-white' />
-        </button>
-      </div>
-
-      <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {fetchResource?.data?.data?.map((resource) => (
-          <ResourceItem
-            handleClick={handleResourceClick}
-            key={resource.id}
-            resource={resource}
-          />
-        ))}
-      </div>
-    </div>
-  );
-
+    );
+  };
   const RenderDetail = () => {
     if (!activeArticle) return null;
     return (
@@ -245,11 +207,12 @@ export const ResourcesPage: React.FC = () => {
             />
             <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8 md:p-12'>
               <span className='inline-block bg-brand-accent text-brand-dark px-3 py-1 rounded-full text-xs font-bold mb-4 w-fit'>
-                {activeArticle.category}
+                {activeArticle.category.replaceAll("_", " ")}
               </span>
               <h1 className='text-3xl md:text-5xl font-bold text-white mb-4 leading-tight'>
                 {activeArticle.title}
               </h1>
+
               <div className='flex items-center gap-6 text-white/90'>
                 <div className='flex items-center gap-2'>
                   <User className='w-4 h-4' /> {activeArticle.author}
@@ -259,7 +222,7 @@ export const ResourcesPage: React.FC = () => {
                 </div>
                 <div className='flex items-center gap-2'>
                   <Clock className='w-4 h-4' />{" "}
-                  {Math.ceil(activeArticle?.body.split("")?.length / 60) +
+                  {Math.ceil(activeArticle?.body.split(" ")?.length / 300) +
                     "min read"}
                 </div>
               </div>
@@ -268,7 +231,7 @@ export const ResourcesPage: React.FC = () => {
 
           <div className='p-8 md:p-12 prose prose-slate max-w-none'>
             <div
-              className='text-slate-700 text-lg leading-relaxed space-y-6'
+              className='text-slate-700 text-lg leading-relaxed space-y-6 whitespace-pre-line'
               dangerouslySetInnerHTML={{ __html: activeArticle.body }}
             />
 
