@@ -8,12 +8,12 @@ const createStudentForm = () => {
   const defaultValues: Omit<StudentModelInterface, "id"> = {
     email: "",
     full_name: "",
-    year_of_study: "",
+    internship_type: "",
     course_of_study: "",
   }
   const studentFormSchema = Yup.object({
     full_name: Yup.string().required().min(2),
-    year_of_study: Yup.string().required(),
+    internship_type: Yup.string().required(),
     course_of_study: Yup.string().required(),
     email: Yup.string().email().required(),
   }).required();

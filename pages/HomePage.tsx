@@ -226,7 +226,7 @@ const HomePage = () => {
                   Don't Miss Your Next Big Break
                 </h2>
                 <p className='text-white/90 text-sm md:text-base max-w-xl mt-2'>
-                  Join 15,000+ students receiving curated internships,
+                  Join 1,500+ students receiving curated internships,
                   scholarship alerts, and career coaching tips directly to their
                   inbox.
                 </p>

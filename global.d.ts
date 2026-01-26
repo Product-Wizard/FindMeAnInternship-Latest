@@ -26,6 +26,19 @@ interface JobQuery {
   hybrid?: string;
 }
 
+interface NewsLetterSubscriberQuery {
+
+}
+
+export interface ResourceQuery {
+  title?: string;
+  category?: string;
+  author?: string;
+  imageUrl?: string;
+  summary?: string;
+  body?: string;
+}
+
 export interface pagination {
   nextPage: number;
   previousPage: number;

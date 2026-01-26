@@ -135,16 +135,25 @@ const GetInvolvedPage = () => {
               <select
                 name='year_of_study'
                 className='w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-teal outline-none text-slate-500'
-                {...studentForm.register("year_of_study")}
+                {...studentForm.register("internship_type")}
               >
-                <option value=''>Select Year of Study</option>
+                <option value=''>Select Internship Type</option>
+                <option value='general_internship'>General Internship</option>
+                <option value='siwes'>Siwes</option>
+                <option value='graduate_opportunities'>
+                  Graduate Opportunities
+                </option>
+                <option value='students_sign_up'>(students sign up)</option>
+                {/* <option value=''>Select Year of Study</option>
                 <option value='fresh_man'>Freshman</option>
                 <option value='sophomore'>Sophomore</option>
                 <option value='junior'>Junior</option>
-                <option value='senior'>Senior</option>
+                <option value='senior'>Senior</option> */}
               </select>
               <FormErrorMessage
-                message={studentForm?.formState?.errors?.year_of_study?.message}
+                message={
+                  studentForm?.formState?.errors?.internship_type?.message
+                }
               />
               <button
                 type='submit'
