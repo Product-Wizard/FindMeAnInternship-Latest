@@ -181,6 +181,11 @@ export const ResourcesPage: React.FC = () => {
             />
           ))}
         </div>
+        {fetchResource?.data?.data?.length === 0 ? (
+          <div className='p-12 text-center text-slate-400'>
+            No article available on this page
+          </div>
+        ) : null}
       </div>
     );
   };

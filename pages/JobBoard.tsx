@@ -119,7 +119,7 @@ const JobBoard = () => {
             Find Your Path
           </h2>
           <p className='text-slate-600 max-w-2xl mx-auto'>
-            Whether you are looking for a local placement across nigeria, a
+            Whether you are looking for a local placement across Nigeria, a
             remote gig, or an international adventure, we have opportunities for
             you.
           </p>
