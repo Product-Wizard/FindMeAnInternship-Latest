@@ -14,6 +14,7 @@ import JobApplicationModal from "@/components/JobApplicationModal";
 import { useQueryClient } from "@tanstack/react-query";
 import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
 import NigerianStates from "@/consts/NigerianStates";
+import SEO from "@/components/SEO";
 
 const PER_PAGE = 20;
 const JobBoard = () => {
@@ -111,6 +112,12 @@ const JobBoard = () => {
 
   return (
     <div className='min-h-screen bg-slate-50 py-12 overflow-x-hidden'>
+      <SEO
+        title='Internship Job Board in Nigeria'
+        description='Browse verified internship openings, SIWES opportunities, and graduate trainee roles across Nigerian states. Filter by location, category, and work mode.'
+        keywords='nigeria internship jobs, siwes jobs, graduate trainee roles nigeria, remote internship nigeria'
+        path='/jobs'
+      />
       {fetchJobQuery?.isFetching ? <BlockLoadingIndicator /> : null}
       <div className=' w-full lg:max-w-7xl mx-auto px-4'>
         {/* Header */}

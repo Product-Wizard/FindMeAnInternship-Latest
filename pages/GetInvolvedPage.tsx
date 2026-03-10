@@ -18,6 +18,7 @@ import { OrganizationModelInterface } from "@/types/model/organization.model";
 import Window from "@/utils/window.utils";
 import AppModal from "@/components/AppModal";
 import { InlineWidget } from "react-calendly";
+import SEO from "@/components/SEO";
 
 const GetInvolvedPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -65,6 +66,12 @@ const GetInvolvedPage = () => {
   };
   return (
     <div className='min-h-screen bg-slate-50 py-12 scroll-smooth '>
+      <SEO
+        title='Partner With Us | Internship Talent Pipeline Nigeria'
+        description='Join Find Me an Internship as a student or employer. Build your profile, hire internship talent, and support youth employment in Nigeria.'
+        keywords='partner with internship platform nigeria, hire interns nigeria, student internship signup'
+        path='/involved'
+      />
       <AppModal
         headerText='Schedule meeting with us at Findmeanintenship'
         open={openModal}
