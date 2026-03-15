@@ -21,6 +21,7 @@ import { ResourceModelInterface } from "@/types/model/resource.model";
 import Paginator from "@/components/Paginator";
 import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
+import SEO from "@/components/SEO";
 
 const PER_PAGE = 20;
 
@@ -290,6 +291,16 @@ export const ResourcesPage: React.FC = () => {
 
   return (
     <div className='min-h-screen bg-slate-50 py-12'>
+      <SEO
+        title={activeArticle ? `${activeArticle.title} | Career Resources Nigeria` : 'Career Resources for Nigerian Students and Graduates'}
+        description={
+          activeArticle
+            ? activeArticle.summary || activeArticle.title
+            : 'Explore practical career guides, CV tips, interview prep, and internship advice built for students and early-career job seekers in Nigeria.'
+        }
+        keywords='career resources nigeria, cv tips nigeria, internship interview tips, graduate career guide'
+        path={activeArticle ? `/resources?id=${activeArticle.id}` : '/resources'}
+      />
       <div className='max-w-7xl mx-auto px-4'>
         {activeArticle ? <RenderDetail /> : <RenderList />}
         <div>

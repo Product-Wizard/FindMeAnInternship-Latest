@@ -14,6 +14,7 @@ import NewsLetterSubscriberService from "@/ApiService/NewsLetterSubscriberSevice
 import toast from "react-hot-toast";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import { NewsletterPopup } from "@/components/NewsletterPopup";
+import SEO from "@/components/SEO";
 
 const HomePage = () => {
   const newsLetterSubscriberMutation =
@@ -39,6 +40,12 @@ const HomePage = () => {
   };
   return (
     <div className='flex flex-col'>
+      <SEO
+        title='Internship Opportunities for Students in Nigeria'
+        description='Find verified internship opportunities, SIWES placements, and graduate training roles in Nigeria. Build skills, apply faster, and start your career with trusted organizations.'
+        keywords='internship in nigeria, siwes placement, graduate trainee nigeria, students internship lagos, entry level jobs nigeria'
+        path='/'
+      />
       {/* Problem Section (Hero) */}
       <NewsletterPopup />
       <section className='relative bg-brand-dark text-white pt-20 pb-32 overflow-hidden'>
