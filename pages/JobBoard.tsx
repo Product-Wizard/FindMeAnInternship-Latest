@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Building2, ArrowRight, MapPin, Search } from "lucide-react";
 import { JobSlider } from "@/components/JobSlider";
 import JobTrainingScopePicker from "@/components/JobTrainingScopePicker";
@@ -303,7 +304,7 @@ const JobBoard = () => {
           {(fetchJobQuery?.data?.data || []).length > 0 ? (
             <div className='lg:col-span-3 space-y-4'>
               {(fetchJobQuery?.data?.data || []).map((job) => {
-                return <JobItemList job={job} />;
+                return <JobItemList key={job.id} job={job} />;
               })}
             </div>
           ) : (
@@ -342,7 +343,6 @@ function JobItemList({ job }: { job: JobModelInterface }) {
   const [openJobApplication, setOpenJobApplication] = useState(false);
   return (
     <div
-      key={job.id}
       className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'
     >
       {openJobApplication ? (
@@ -380,12 +380,20 @@ function JobItemList({ job }: { job: JobModelInterface }) {
       </p>
       <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
         <span className='text-xs text-slate-400'>Posted {job.postedDate}</span>
-        <button
-          onClick={() => setOpenJobApplication(true)}
-          className='text-sm font-bold text-brand-teal hover:text-brand-dark'
-        >
-          Apply Now &rarr;
-        </button>
+        <div className='flex items-center gap-4'>
+          <Link
+            to={`/jobs/${job.id}`}
+            className='text-sm font-bold text-brand-dark hover:text-brand-teal'
+          >
+            View Details
+          </Link>
+          <button
+            onClick={() => setOpenJobApplication(true)}
+            className='text-sm font-bold text-brand-teal hover:text-brand-dark'
+          >
+            Apply Now &rarr;
+          </button>
+        </div>
       </div>
     </div>
   );
