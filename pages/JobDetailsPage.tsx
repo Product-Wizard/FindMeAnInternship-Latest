@@ -234,10 +234,15 @@ function JobPostingStructuredData({
     url,
   };
 
+  const escapedJsonLd = JSON.stringify(jobPostingJsonLd)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+
   return (
     <script
       type='application/ld+json'
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }}
+      dangerouslySetInnerHTML={{ __html: escapedJsonLd }}
     />
   );
 }
