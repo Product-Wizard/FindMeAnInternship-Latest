@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import HomePage from "./pages/HomePage";
 import ImpactPage from "./pages/ImpactPage";
 import JobBoard from "./pages/JobBoard";
+import JobDetailsPage from "./pages/JobDetailsPage";
 import GetInvolvedPage from "./pages/GetInvolvedPage";
 import Footer from "./components/Footer";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path='/' element={<HomePage />} />
           {/* <Route path='/impact' element={<ImpactPage />} /> */}
           <Route path='/jobs' element={<JobBoard />} />
+          <Route path='/jobs/:id' element={<JobDetailsPage />} />
           <Route path='/resources' element={<ResourcesPage />} />
           <Route path='/involved' element={<GetInvolvedPage />} />
         </Routes>

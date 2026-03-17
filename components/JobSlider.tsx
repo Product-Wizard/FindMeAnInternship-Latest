@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   ChevronLeft,
   ChevronRight,
@@ -67,7 +68,7 @@ export const JobSlider: React.FC<JobSliderProps> = ({
         style={{ scrollBehavior: "smooth" }}
       >
         {jobs.map((job) => (
-          <SliderJobItem job={job} />
+          <SliderJobItem key={job.id} job={job} />
         ))}
       </div>
     </div>
@@ -78,7 +79,6 @@ function SliderJobItem({ job }: { job: JobModelInterface }) {
   const [openJobApplication, setOpenJobApplication] = useState(false);
   return (
     <div
-      key={`${job.id}`}
       className='min-w-[300px] md:min-w-[340px] bg-white rounded-xl shadow-md border border-slate-100 snap-center hover:shadow-xl hover:border-brand-teal/30 transition-all duration-300 flex flex-col relative overflow-hidden group/card'
     >
       {openJobApplication ? (
@@ -134,12 +134,20 @@ function SliderJobItem({ job }: { job: JobModelInterface }) {
           >
             {job.type}
           </span>
-          <button
-            onClick={() => setOpenJobApplication(true)}
-            className='text-brand-dark font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all'
-          >
-            Apply <ArrowRight className='w-4 h-4' />
-          </button>
+          <div className='flex items-center gap-3'>
+            <Link
+              to={`/jobs/${job.id}`}
+              className='text-brand-dark font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all'
+            >
+              Details <ArrowRight className='w-4 h-4' />
+            </Link>
+            <button
+              onClick={() => setOpenJobApplication(true)}
+              className='text-brand-teal font-bold text-sm'
+            >
+              Apply
+            </button>
+          </div>
         </div>
       </div>
     </div>
