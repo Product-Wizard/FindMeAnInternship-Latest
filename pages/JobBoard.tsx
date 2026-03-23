@@ -16,6 +16,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
 import NigerianStates from "@/consts/NigerianStates";
 import SEO from "@/components/SEO";
+import JobCompensationSummary from "@/components/JobCompensationSummary";
 
 const PER_PAGE = 20;
 const JobBoard = () => {
@@ -375,9 +376,12 @@ function JobItemList({ job }: { job: JobModelInterface }) {
           {job.type}
         </span>
       </div>
-      <p className='text-slate-600 text-sm mb-4 line-clamp-2'>
-        {job.description}
-      </p>
+      <div className='mb-4 space-y-3'>
+        <JobCompensationSummary job={job} />
+        <p className='text-slate-600 text-sm line-clamp-2'>
+          {job.description}
+        </p>
+      </div>
       <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
         <span className='text-xs text-slate-400'>Posted {job.postedDate}</span>
         <div className='flex items-center gap-4'>
