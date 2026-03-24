@@ -1,4 +1,3 @@
-import type { CompensationType } from "@/types/model/Job.model";
 
 const CURRENCY_PATTERN = /(₦|\bNGN\b|naira)/i;
 
@@ -31,15 +30,15 @@ const formatNairaRange = (compensationRange: string) => {
 };
 
 export const formatCompensationLabel = (
-  compensationType?: CompensationType,
-  compensationRange?: string | null
+  compensation?: boolean,
+  compensationRange?: string
 ) => {
-  if (compensationType === "paid") {
+  if (compensation) {
     const trimmedRange = compensationRange?.trim();
     return trimmedRange ? formatNairaRange(trimmedRange) : "Compensation available";
   }
 
-  if (compensationType === "unpaid") {
+  if (!compensation) {
     return "No compensation";
   }
 
@@ -47,6 +46,6 @@ export const formatCompensationLabel = (
 };
 
 export const hasPaidCompensation = (
-  compensationType?: CompensationType,
-  compensationRange?: string | null
-) => compensationType === "paid" && Boolean(compensationRange?.trim());
+  compensation?: boolean,
+  pay_range?: string
+) => compensation ? Boolean(pay_range?.trim()) : false;

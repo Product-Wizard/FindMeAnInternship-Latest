@@ -6,7 +6,7 @@ import {
 } from "@/utils/jobCompensation";
 
 type JobCompensationSummaryProps = {
-  job: Pick<JobModelInterface, "compensation_type" | "compensation_range">;
+  job: Pick<JobModelInterface, "compensation" | "pay_range">;
   variant?: "compact" | "detail";
 };
 
@@ -14,8 +14,8 @@ function JobCompensationSummary({
   job,
   variant = "compact",
 }: JobCompensationSummaryProps) {
-  const isPaidRole = hasPaidCompensation(job.compensation_type, job.compensation_range);
-  const label = formatCompensationLabel(job.compensation_type, job.compensation_range);
+  const isPaidRole = hasPaidCompensation(job.compensation, job.pay_range);
+  const label = formatCompensationLabel(job.compensation, job.pay_range);
   const Icon = isPaidRole ? BadgeDollarSign : Ban;
 
   if (variant === "detail") {
