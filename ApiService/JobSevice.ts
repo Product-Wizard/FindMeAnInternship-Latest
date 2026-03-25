@@ -14,7 +14,8 @@ const fetchJobsServiceQuery = (paginationQuery: ApiPaginationQuery & JobQuery) =
 const fetchJobServiceQuery = (id: number) => {
   return useQuery({
     queryFn: () => JobApi.getJob(id),
-    queryKey: [ ...ApiQueryMutationKeys.JobQuryMutationKeys.getJobQueryKeys, id ]
+    queryKey: [ ...ApiQueryMutationKeys.JobQuryMutationKeys.getJobQueryKeys, id ],
+    enabled: Number.isInteger(id) && id > 0,
   });
 }
 
