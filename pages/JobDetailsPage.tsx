@@ -10,6 +10,7 @@ import {
   Shapes,
   Tag,
 } from "lucide-react";
+import JobCompensationSummary from "@/components/JobCompensationSummary";
 import JobService from "@/ApiService/JobSevice";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
 import JobApplicationModal from "@/components/JobApplicationModal";
@@ -173,6 +174,8 @@ function JobDetailsPage() {
                   value={job.postedDate}
                 />
               </div>
+
+              <JobCompensationSummary job={job} variant='detail' />
 
               <section className='mb-8'>
                 <h2 className='text-lg font-bold text-brand-dark mb-3'>Job Description</h2>
