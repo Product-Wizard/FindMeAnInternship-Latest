@@ -49,4 +49,4 @@ export const formatCompensationLabel = (
 export const hasPaidCompensation = (
   compensationType?: CompensationType,
   compensationRange?: string | null
-) => compensationType === "paid" && Boolean(compensationRange?.trim());
+) => compensationType === "paid";
