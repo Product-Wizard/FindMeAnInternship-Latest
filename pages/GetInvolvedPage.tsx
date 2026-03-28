@@ -283,7 +283,7 @@ const GetInvolvedPage = () => {
               <button
                 onClick={() =>
                   Window.newTab(
-                    "https://airtable.com/appZEY5L7mjpgjj9G/pagOoTv2WbrUxr25S/form"
+                    "https://airtable.com/appZEY5L7mjpgjj9G/pagIjnh8AmNHFILaw/form"
                   )
                 }
                 className='w-full bg-white border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white font-bold py-3 px-6 rounded-xl transition-all shadow-sm'
@@ -358,7 +358,7 @@ const GetInvolvedPage = () => {
               <button
                 onClick={() =>
                   Window.newTab(
-                    "https://airtable.com/appZEY5L7mjpgjj9G/pagmMAlkM24RVDwda/form"
+                    "https://airtable.com/appZEY5L7mjpgjj9G/pagQA8b1sLTxdmYi0/form"
                   )
                 }
                 className='w-full bg-white border-2 border-brand-accent text-brand-dark hover:bg-brand-accent hover:border-brand-accent font-bold py-3 px-6 rounded-xl transition-all shadow-sm'
