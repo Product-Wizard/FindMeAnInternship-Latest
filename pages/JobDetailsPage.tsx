@@ -10,6 +10,7 @@ import {
   Shapes,
   Tag,
 } from "lucide-react";
+import JobCompensationSummary from "@/components/JobCompensationSummary";
 import JobService from "@/ApiService/JobSevice";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
 import JobApplicationModal from "@/components/JobApplicationModal";
@@ -174,6 +175,8 @@ function JobDetailsPage() {
                 />
               </div>
 
+              <JobCompensationSummary job={job} variant='detail' />
+
               <section className='mb-8'>
                 <h2 className='text-lg font-bold text-brand-dark mb-3'>Job Description</h2>
                 <p className='text-slate-700 leading-7 whitespace-pre-wrap'>{job.description}</p>
@@ -234,10 +237,15 @@ function JobPostingStructuredData({
     url,
   };
 
+  const escapedJsonLd = JSON.stringify(jobPostingJsonLd)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+
   return (
     <script
       type='application/ld+json'
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }}
+      dangerouslySetInnerHTML={{ __html: escapedJsonLd }}
     />
   );
 }

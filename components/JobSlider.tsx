@@ -133,12 +133,20 @@ function SliderJobItem({ job }: { job: JobModelInterface }) {
           >
             {job.type}
           </span>
-          <button
-            onClick={() => setOpenJobApplication(true)}
-            className='text-brand-teal font-bold text-sm'
-          >
-            Apply
-          </button>
+          <div className='flex items-center gap-3'>
+            <Link
+              to={`/jobs/${job.id}`}
+              className='text-brand-dark font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all'
+            >
+              Details <ArrowRight className='w-4 h-4' />
+            </Link>
+            <button
+              onClick={() => setOpenJobApplication(true)}
+              className='text-brand-teal font-bold text-sm'
+            >
+              Apply
+            </button>
+          </div>
         </div>
       </div>
     </div>
