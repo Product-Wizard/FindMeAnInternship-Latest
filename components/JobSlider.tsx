@@ -6,6 +6,7 @@ import {
   MapPin,
   Building2,
   CalendarDays,
+  ArrowRight,
 } from "lucide-react";
 import { JobModelInterface } from "@/types/model/Job.model";
 import JobApplicationModal from "./JobApplicationModal";
@@ -77,9 +78,7 @@ export const JobSlider: React.FC<JobSliderProps> = ({
 function SliderJobItem({ job }: { job: JobModelInterface }) {
   const [openJobApplication, setOpenJobApplication] = useState(false);
   return (
-    <div
-      className='min-w-[300px] md:min-w-[340px] bg-white rounded-xl shadow-md border border-slate-100 snap-center hover:shadow-xl hover:border-brand-teal/30 transition-all duration-300 flex flex-col relative overflow-hidden group/card'
-    >
+    <div className='min-w-[300px] md:min-w-[340px] bg-white rounded-xl shadow-md border border-slate-100 snap-center hover:shadow-xl hover:border-brand-teal/30 transition-all duration-300 flex flex-col relative overflow-hidden group/card'>
       {openJobApplication ? (
         <JobApplicationModal
           job={job}
