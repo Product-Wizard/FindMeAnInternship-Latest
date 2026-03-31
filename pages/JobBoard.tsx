@@ -355,7 +355,7 @@ function JobItemList({ job }: { job: JobModelInterface }) {
       <div className='flex justify-between items-start mb-2'>
         <div>
           <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
-            {job.title}
+            <Link to={`/jobs/${job.id}`}>{job.title}</Link>
           </h3>
           <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
             <Building2 className='w-3 h-3' /> {job.company}

@@ -5,7 +5,6 @@ import {
   ChevronRight,
   MapPin,
   Building2,
-  ArrowRight,
   CalendarDays,
 } from "lucide-react";
 import { JobModelInterface } from "@/types/model/Job.model";
@@ -109,7 +108,7 @@ function SliderJobItem({ job }: { job: JobModelInterface }) {
         </div>
 
         <h3 className='text-lg font-bold text-slate-800 mb-1 group-hover/card:text-brand-teal transition-colors line-clamp-1'>
-          {job.title}
+          <Link to={`/jobs/${job.id}`}>{job.title}</Link>
         </h3>
         <p className='text-sm font-medium text-slate-500 mb-4'>{job.company}</p>
 
