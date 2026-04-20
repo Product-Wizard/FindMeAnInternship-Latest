@@ -40,14 +40,16 @@ function JobDetailsPage() {
   const seoTitle = job
     ? `${job.title} at ${job.company}`
     : isInvalidId
-    ? "Invalid job listing"
-    : "Job details";
+      ? "Invalid job listing"
+      : "Job details";
 
   const seoDescription = job
-    ? truncate(job.description || `${job.title} internship details at ${job.company}`)
+    ? truncate(
+        job.description || `${job.title} internship details at ${job.company}`,
+      )
     : isInvalidId
-    ? "The requested job listing is invalid."
-    : "Explore full job details, requirements, and application links.";
+      ? "The requested job listing is invalid."
+      : "Explore full job details, requirements, and application links.";
 
   const seoKeywords = job
     ? [
@@ -75,7 +77,9 @@ function JobDetailsPage() {
       {isInvalidId ? (
         <div className='min-h-[60vh] flex items-center justify-center text-center px-4'>
           <div>
-            <h2 className='text-2xl font-bold text-brand-dark mb-2'>Invalid job</h2>
+            <h2 className='text-2xl font-bold text-brand-dark mb-2'>
+              Invalid job
+            </h2>
             <p className='text-slate-600 mb-4'>
               The job you are trying to access does not exist.
             </p>
@@ -92,7 +96,9 @@ function JobDetailsPage() {
       ) : !job ? (
         <div className='min-h-[60vh] flex items-center justify-center text-center px-4'>
           <div>
-            <h2 className='text-2xl font-bold text-brand-dark mb-2'>Job not found</h2>
+            <h2 className='text-2xl font-bold text-brand-dark mb-2'>
+              Job not found
+            </h2>
             <p className='text-slate-600 mb-4'>
               This job may have been removed or is no longer available.
             </p>
@@ -133,18 +139,20 @@ function JobDetailsPage() {
             <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-8'>
               <div className='flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b border-slate-100 pb-6 mb-6'>
                 <div>
-                  <h1 className='text-3xl font-bold text-brand-dark mb-2'>{job.title}</h1>
+                  <h1 className='text-3xl font-bold text-brand-dark mb-2'>
+                    {job.title}
+                  </h1>
                   <p className='text-slate-600 flex items-center gap-2'>
                     <Building2 className='w-4 h-4' />
                     {job.company}
                   </p>
                 </div>
-                <button
+                {/* <button
                   onClick={() => setOpenJobApplication(true)}
                   className='bg-brand-teal text-white rounded-lg px-5 py-3 text-sm font-semibold hover:opacity-90'
                 >
                   Apply Now
-                </button>
+                </button> */}
               </div>
 
               <div className='grid md:grid-cols-2 gap-4 mb-8'>
@@ -178,19 +186,26 @@ function JobDetailsPage() {
               <JobCompensationSummary job={job} variant='detail' />
 
               <section className='mb-8'>
-                <h2 className='text-lg font-bold text-brand-dark mb-3'>Job Description</h2>
-                <p className='text-slate-700 leading-7 whitespace-pre-wrap'>{job.description}</p>
+                <h2 className='text-lg font-bold text-brand-dark mb-3'>
+                  Job Description
+                </h2>
+                <p className='text-slate-700 leading-7 whitespace-pre-wrap'>
+                  {job.description}
+                </p>
               </section>
 
               <section>
-                <h2 className='text-lg font-bold text-brand-dark mb-3'>Application Link</h2>
+                <h2 className='text-lg font-bold text-brand-dark mb-3'>
+                  Application Link
+                </h2>
                 <a
                   href={job.link}
                   target='_blank'
                   rel='noreferrer'
                   className='inline-flex items-center gap-2 text-brand-teal font-semibold break-all'
                 >
-                  Open external application page <ExternalLink className='w-4 h-4' />
+                  Open external application page{" "}
+                  <ExternalLink className='w-4 h-4' />
                 </a>
               </section>
             </div>
@@ -265,7 +280,9 @@ function InfoPill({
         {icon}
         {label}
       </p>
-      <p className='text-sm font-semibold text-brand-dark'>{value || "Not provided"}</p>
+      <p className='text-sm font-semibold text-brand-dark'>
+        {value || "Not provided"}
+      </p>
     </div>
   );
 }
