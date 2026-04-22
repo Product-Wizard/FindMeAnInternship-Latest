@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { X, Mail, Bell, Check } from "lucide-react";
 import NewsLetterSubscriberFormValidators from "@/formValidator/NewsLetterSubscriberFormValidator";

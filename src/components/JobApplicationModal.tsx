@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import BlockLoadingIndicator from "./BlockLoadingIndicator";
 import { JobModelInterface } from "@/types/model/Job.model";

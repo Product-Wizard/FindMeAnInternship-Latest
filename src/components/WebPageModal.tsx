@@ -1,3 +1,5 @@
+"use client";
+
 interface WebPageModalProps {
   isOpen: boolean;
   onClose: () => void;

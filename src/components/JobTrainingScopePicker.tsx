@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Globe, Home, Laptop } from "lucide-react";
 import { JobTrainigScope } from "@/types/model/Job.model";

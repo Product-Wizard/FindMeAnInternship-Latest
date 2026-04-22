@@ -1,4 +1,6 @@
-import { ApiPaginationQuery, pagination } from "@/global";
+"use client";
+
+import { pagination } from "@/global";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -50,34 +52,6 @@ function Paginator({
       </div>
     </div>
   );
-  // return (
-  //   <div>
-  //     <div className='flex items-center justify-center '>
-  //       {currentPage <= 1 ? null : (
-  //         <button
-  //           onClick={handleOnClickPrev}
-  //           className='p-10 mx-5 text-white bg-blue-900 cursor-pointer'
-  //         >
-  //           prev
-  //         </button>
-  //       )}
-  //       {currentPage == pagination?.totalPages ? null : (
-  //         <button
-  //           onClick={handleOnClickNext}
-  //           className='p-10 mx-5 text-white bg-blue-900 cursor-pointer'
-  //         >
-  //           Next
-  //         </button>
-  //       )}
-  //     </div>
-  //     <div className='flex items-center justify-end'>
-  //       {/* <input type='number' min='10' max='100' onChange={(e) => } /> */}
-  //       <p className='text-right text-slate-700 text-sm'>
-  //         page {currentPage} of {pagination?.totalPages}
-  //       </p>
-  //     </div>
-  //   </div>
-  // );
 }
 
 export default Paginator;

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Loader2, Sparkles } from 'lucide-react';
 import { streamCareerAdvice } from '../services/geminiService';
