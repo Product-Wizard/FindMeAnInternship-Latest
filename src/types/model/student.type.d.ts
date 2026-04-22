@@ -1,5 +1,7 @@
 export type internship_type = "general_internship" | "siwes" | "graduate_opportunities" | "students_sign_up" | "";
 
+type year_of_study = any;
+
 export interface StudentModelInterface {
   id: number;
   email: string;
