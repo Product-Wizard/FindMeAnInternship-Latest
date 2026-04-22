@@ -109,11 +109,21 @@ function JobDetailsPage({ params }: PageProps) {
 
             <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-8'>
               <div className='flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b border-slate-100 pb-6 mb-6'>
-                <div>
-                  <h1 className='text-3xl font-bold text-brand-dark mb-2'>
-                    {job.title}
-                  </h1>
-                  <p className='text-slate-600 flex items-center gap-2'>
+                <div className='flex-1'>
+                  <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
+                    <h1 className='text-3xl font-bold text-brand-dark mb-2 md:mb-0'>
+                      {job.title}
+                    </h1>
+                    <a
+                      href={job.link}
+                      target='_blank'
+                      rel='noreferrer'
+                      className='inline-flex items-center gap-2 bg-brand-teal hover:bg-brand-dark text-white px-6 py-3 rounded-full font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap'
+                    >
+                      Apply Now <ExternalLink className='w-4 h-4' />
+                    </a>
+                  </div>
+                  <p className='text-slate-600 flex items-center gap-2 mt-4'>
                     <Building2 className='w-4 h-4' />
                     {job.company}
                   </p>

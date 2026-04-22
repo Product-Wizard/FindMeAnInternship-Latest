@@ -330,16 +330,9 @@ const JobBoard = () => {
 };
 
 function JobItemList({ job }: { job: JobModelInterface }) {
-  const [openJobApplication, setOpenJobApplication] = useState(false);
   return (
-    <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'>
-      {openJobApplication ? (
-        <JobApplicationModal
-          job={job}
-          onClose={() => setOpenJobApplication(false)}
-        />
-      ) : null}
-      <Link href={`/jobs/${job.id}`}>
+    <Link href={`/jobs/${job.id}`} className='block'>
+      <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:border-brand-teal/50 transition-all group'>
         <div className='flex justify-between items-start mb-2'>
           <div>
             <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
@@ -375,16 +368,19 @@ function JobItemList({ job }: { job: JobModelInterface }) {
             Posted {job.postedDate}
           </span>
           <div className='flex items-center gap-4'>
-            <Link
-              href={`/jobs/${job.id}`}
-              className='text-sm font-bold text-brand-dark hover:text-brand-teal'
+            <a
+              href={job.link}
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={(e) => e.stopPropagation()}
+              className='text-sm font-bold text-brand-teal hover:text-brand-dark relative z-10'
             >
-              View Details
-            </Link>
+              Apply Now &rarr;
+            </a>
           </div>
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 
