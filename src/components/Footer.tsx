@@ -1,12 +1,11 @@
 import {
-  MapPin,
   Facebook,
   Twitter,
   Linkedin,
   Instagram,
   Mail,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { FaWhatsapp, FaTiktok } from "react-icons/fa";
 
 const Footer = () => (
@@ -21,7 +20,6 @@ const Footer = () => (
           organizations.
         </p>
         <div className='flex gap-4'>
-          {/* <Facebook className='w-5 h-5 hover:text-brand-teal cursor-pointer' /> */}
           <a
             href='https://x.com/TheInternPost_'
             className='border-none no-underline'
@@ -34,7 +32,6 @@ const Footer = () => (
             className='border-none no-underline'
             target='blank'
           >
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
             <FaWhatsapp className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
           </a>
           <a
@@ -51,7 +48,6 @@ const Footer = () => (
           >
             <FaTiktok className='w-5 h-5 hover:text-brand-teal cursor-pointer' />
           </a>
-          {/* <Instagram className='w-5 h-5 hover:text-brand-teal cursor-pointer' /> */}
         </div>
       </div>
 
@@ -59,47 +55,27 @@ const Footer = () => (
         <h4 className='text-white font-bold mb-4'>Quick Links</h4>
         <ul className='space-y-2 text-sm'>
           <li>
-            <Link to='/' className='hover:text-brand-teal'>
+            <Link href='/' className='hover:text-brand-teal'>
               Home
             </Link>
           </li>
-          {/* <li>
-            <Link to='/impact' className='hover:text-brand-teal'>
-              Our Impact
-            </Link>
-          </li> */}
           <li>
-            <Link to='/jobs' className='hover:text-brand-teal'>
+            <Link href='/jobs' className='hover:text-brand-teal'>
               Browse Internships
             </Link>
           </li>
           <li>
-            <Link to='/resources' className='hover:text-brand-teal'>
+            <Link href='/resources' className='hover:text-brand-teal'>
               Resources
             </Link>
           </li>
           <li>
-            <Link to='/involved/#volunteer' className='hover:text-brand-teal'>
+            <Link href='/involved#volunteer' className='hover:text-brand-teal'>
               Volunteer
             </Link>
           </li>
         </ul>
       </div>
-
-      {/* <div>
-        <h4 className='text-white font-bold mb-4'>Resources</h4>
-        <ul className='space-y-2 text-sm'>
-          <li className='hover:text-brand-teal cursor-pointer'>
-            Student Toolkit
-          </li>
-          <li className='hover:text-brand-teal cursor-pointer'>
-            Employer Guide
-          </li>
-          <li className='hover:text-brand-teal cursor-pointer'>
-            Resume Builder
-          </li>
-        </ul>
-      </div> */}
 
       <div>
         <h4 className='text-white font-bold mb-4'>Contact</h4>
@@ -107,10 +83,6 @@ const Footer = () => (
           <Mail className='w-4 h-4' />
           <span>info@findmeaninternship.com</span>
         </div>
-        {/* <div className='flex items-center gap-2 text-sm'>
-          <MapPin className='w-4 h-4' />
-          <span>123 Opportunity Blvd, Tech City</span>
-        </div> */}
       </div>
     </div>
     <div className='max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-slate-700 text-center text-xs'>

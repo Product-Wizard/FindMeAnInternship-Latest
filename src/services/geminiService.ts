@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
+const ai = new GoogleGenAI({ apiKey });
 
 export const streamCareerAdvice = async (
   userMessage: string,

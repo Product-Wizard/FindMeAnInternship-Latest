@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   Search,
@@ -6,7 +8,7 @@ import {
   TrendingUp,
   Mail,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import NewsLetterSubscriberFormValidators from "@/formValidator/NewsLetterSubscriberFormValidator";
 import FormErrorMessage from "@/components/FormErrorMessage";
 import { CreateNewsLetterSubscriberModel } from "@/types/model/NewsLetterSubscriber.model";
@@ -14,7 +16,6 @@ import NewsLetterSubscriberService from "@/ApiService/NewsLetterSubscriberSevice
 import toast from "react-hot-toast";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import { NewsletterPopup } from "@/components/NewsletterPopup";
-import SEO from "@/components/SEO";
 
 const HomePage = () => {
   const newsLetterSubscriberMutation =
@@ -22,7 +23,6 @@ const HomePage = () => {
   const newsLetterSbscriberForm =
     NewsLetterSubscriberFormValidators.createNewsLetterSubscriber();
 
-  //
   const handleSubscribeNewsLetter = (data: CreateNewsLetterSubscriberModel) => {
     newsLetterSubscriberMutation.mutate(data, {
       onSuccess: (data) => {
@@ -38,14 +38,9 @@ const HomePage = () => {
       },
     });
   };
+
   return (
     <div className='flex flex-col'>
-      <SEO
-        title='Internship Opportunities for Students in Nigeria'
-        description='Find verified internship opportunities, SIWES placements, and graduate training roles in Nigeria. Build skills, apply faster, and start your career with trusted organizations.'
-        keywords='internship in nigeria, siwes placement, graduate trainee nigeria, students internship lagos, entry level jobs nigeria'
-        path='/'
-      />
       {/* Problem Section (Hero) */}
       <NewsletterPopup />
       <section className='relative bg-brand-dark text-white pt-20 pb-32 overflow-hidden'>
@@ -68,13 +63,13 @@ const HomePage = () => {
             </p>
             <div className='flex flex-wrap gap-4'>
               <Link
-                to='/jobs'
+                href='/jobs'
                 className='bg-brand-teal hover:bg-brand-light text-white px-8 py-4 rounded-full font-bold transition-all flex items-center gap-2'
               >
                 Find an Internship <ArrowRight className='w-5 h-5' />
               </Link>
               <Link
-                to='/involved'
+                href='/involved'
                 className='bg-transparent border-2 border-white/20 hover:bg-white/10 text-white px-8 py-4 rounded-full font-bold transition-all inline-block text-center'
               >
                 Become a Partner
@@ -146,9 +141,6 @@ const HomePage = () => {
               <div className='space-y-6'>
                 <div className='bg-white p-6 rounded-xl shadow-sm border border-slate-100'>
                   <p className='text-slate-600 italic mb-4'>
-                    {/* "I applied to 50 jobs with no luck. Find Me an Internship
-                  connected me with a mentor and a 3-month role that turned into
-                  a full-time offer." */}
                     ”Dominion was my first real workplace. Find Me an Internship
                     verified the role, helped me package my skills clearly, and
                     I landed the internship. By my second month, I was trusted
@@ -189,8 +181,7 @@ const HomePage = () => {
               </div>
               <div className='mt-8'>
                 <Link
-                  // to='/impact'
-                  to='/'
+                  href='/'
                   className='text-brand-teal font-bold hover:underline flex items-center gap-2'
                 >
                   Goals <ArrowRight className='w-4 h-4' />

@@ -1,5 +1,7 @@
-import { ReactNode, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+"use client";
+
+import { ReactNode, useMemo, useState, use } from "react";
+import Link from "next/link";
 import {
   ArrowLeft,
   Building2,
@@ -14,7 +16,6 @@ import JobCompensationSummary from "@/components/JobCompensationSummary";
 import JobService from "@/ApiService/JobSevice";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
 import JobApplicationModal from "@/components/JobApplicationModal";
-import SEO from "@/components/SEO";
 
 const toLabel = (value: string) =>
   value
@@ -27,8 +28,13 @@ const toLabel = (value: string) =>
 const truncate = (value: string, length = 160) =>
   value.length <= length ? value : `${value.slice(0, length - 3)}...`;
 
-function JobDetailsPage() {
-  const { id } = useParams();
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+function JobDetailsPage({ params }: PageProps) {
+  const resolvedParams = use(params);
+  const id = resolvedParams.id;
   const [openJobApplication, setOpenJobApplication] = useState(false);
 
   const jobId = useMemo(() => Number(id), [id]);
@@ -37,43 +43,8 @@ function JobDetailsPage() {
   const fetchJobQuery = JobService.fetchJobServiceQuery(jobId);
   const job = fetchJobQuery.data?.data;
 
-  const seoTitle = job
-    ? `${job.title} at ${job.company}`
-    : isInvalidId
-      ? "Invalid job listing"
-      : "Job details";
-
-  const seoDescription = job
-    ? truncate(
-        job.description || `${job.title} internship details at ${job.company}`,
-      )
-    : isInvalidId
-      ? "The requested job listing is invalid."
-      : "Explore full job details, requirements, and application links.";
-
-  const seoKeywords = job
-    ? [
-        "internship job details",
-        job.title,
-        job.company,
-        job.location,
-        toLabel(job.type),
-        toLabel(job.category),
-        toLabel(job.job_training_scope),
-      ]
-        .filter(Boolean)
-        .join(", ")
-    : "internship details, trainee role, job details";
-
   return (
     <div className='min-h-screen bg-slate-50 py-12 overflow-x-hidden'>
-      <SEO
-        title={seoTitle}
-        description={seoDescription}
-        keywords={seoKeywords}
-        path={isInvalidId ? "/jobs" : `/jobs/${jobId}`}
-      />
-
       {isInvalidId ? (
         <div className='min-h-[60vh] flex items-center justify-center text-center px-4'>
           <div>
@@ -84,7 +55,7 @@ function JobDetailsPage() {
               The job you are trying to access does not exist.
             </p>
             <Link
-              to='/jobs'
+              href='/jobs'
               className='inline-flex items-center gap-2 text-brand-teal font-bold'
             >
               <ArrowLeft className='w-4 h-4' /> Back to jobs
@@ -103,7 +74,7 @@ function JobDetailsPage() {
               This job may have been removed or is no longer available.
             </p>
             <Link
-              to='/jobs'
+              href='/jobs'
               className='inline-flex items-center gap-2 text-brand-teal font-bold'
             >
               <ArrowLeft className='w-4 h-4' /> Browse other jobs
@@ -125,12 +96,12 @@ function JobDetailsPage() {
             company={job.company}
             location={job.location}
             employmentType={toLabel(job.type)}
-            url={`${window.location.origin}/jobs/${job.id}`}
+            url={typeof window !== 'undefined' ? `${window.location.origin}/jobs/${job.id}` : ''}
           />
 
-          <div className='w-full lg:max-w-4xl mx-auto px-4'>
+          <div className='w-full lg:max-4xl mx-auto px-4'>
             <Link
-              to='/jobs'
+              href='/jobs'
               className='inline-flex items-center gap-2 text-brand-teal text-sm font-bold mb-6'
             >
               <ArrowLeft className='w-4 h-4' /> Back to all opportunities
@@ -147,12 +118,6 @@ function JobDetailsPage() {
                     {job.company}
                   </p>
                 </div>
-                {/* <button
-                  onClick={() => setOpenJobApplication(true)}
-                  className='bg-brand-teal text-white rounded-lg px-5 py-3 text-sm font-semibold hover:opacity-90'
-                >
-                  Apply Now
-                </button> */}
               </div>
 
               <div className='grid md:grid-cols-2 gap-4 mb-8'>

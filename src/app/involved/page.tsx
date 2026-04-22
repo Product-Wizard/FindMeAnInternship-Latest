@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   GraduationCap,
@@ -18,7 +20,6 @@ import { OrganizationModelInterface } from "@/types/model/organization.model";
 import Window from "@/utils/window.utils";
 import AppModal from "@/components/AppModal";
 import { InlineWidget } from "react-calendly";
-import SEO from "@/components/SEO";
 
 const GetInvolvedPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -36,13 +37,12 @@ const GetInvolvedPage = () => {
         toast.success(data.message);
         studentForm.reset();
       },
-      onError: (data: any, variables) => {
+      onError: (data: any) => {
         toast.error(
           data?.response?.data?.message?.replaceAll("_", " ") ||
             "error occured!"
         );
       },
-      onSettled: () => {},
     });
   };
 
@@ -55,23 +55,17 @@ const GetInvolvedPage = () => {
         organizationForm.reset();
         setTimeout(() => setOpenModal(true), 1500);
       },
-      onError: (data: any, variables) => {
+      onError: (data: any) => {
         toast.error(
           data?.response?.data?.message?.replaceAll("_", " ") ||
             "error occured!"
         );
       },
-      onSettled: () => {},
     });
   };
+
   return (
     <div className='min-h-screen bg-slate-50 py-12 scroll-smooth '>
-      <SEO
-        title='Partner With Us | Internship Talent Pipeline Nigeria'
-        description='Join Find Me an Internship as a student or employer. Build your profile, hire internship talent, and support youth employment in Nigeria.'
-        keywords='partner with internship platform nigeria, hire interns nigeria, student internship signup'
-        path='/involved'
-      />
       <AppModal
         headerText='Schedule meeting with us at Findmeanintenship'
         open={openModal}
@@ -109,7 +103,6 @@ const GetInvolvedPage = () => {
               onSubmit={studentForm.handleSubmit(handleSubmitStudentForm)}
             >
               <input
-                name='full_name'
                 type='text'
                 placeholder='Full Name'
                 className='w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-teal outline-none'
@@ -119,7 +112,6 @@ const GetInvolvedPage = () => {
                 message={studentForm?.formState?.errors?.full_name?.message}
               />
               <input
-                name='email'
                 type='email'
                 placeholder='Email'
                 className='w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-teal outline-none'
@@ -140,7 +132,6 @@ const GetInvolvedPage = () => {
                 }
               />
               <select
-                name='year_of_study'
                 className='w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-teal outline-none text-slate-500'
                 {...studentForm.register("internship_type")}
               >
@@ -151,11 +142,6 @@ const GetInvolvedPage = () => {
                   Graduate Opportunities
                 </option>
                 <option value='students_sign_up'>(students sign up)</option>
-                {/* <option value=''>Select Year of Study</option>
-                <option value='fresh_man'>Freshman</option>
-                <option value='sophomore'>Sophomore</option>
-                <option value='junior'>Junior</option>
-                <option value='senior'>Senior</option> */}
               </select>
               <FormErrorMessage
                 message={
@@ -238,7 +224,6 @@ const GetInvolvedPage = () => {
       </div>
 
       <section id='volunteer'>
-        {/* volunteer for students */}
         <div className='mt-16 px-5'>
           <div className='text-center mb-12'>
             <h3 className='text-3xl font-bold text-brand-dark mb-4'>
@@ -252,7 +237,6 @@ const GetInvolvedPage = () => {
           </div>
 
           <div className='grid md:grid-cols-2 gap-8'>
-            {/* Professional Mentors */}
             <div className='bg-brand-teal/5 border border-brand-teal/20 rounded-2xl p-8 flex flex-col'>
               <div className='flex items-center gap-3 mb-4'>
                 <div className='bg-brand-teal text-white p-3 rounded-full'>
@@ -292,7 +276,6 @@ const GetInvolvedPage = () => {
               </button>
             </div>
 
-            {/* Student Volunteers */}
             <div className='bg-brand-accent/10 border border-brand-accent/30 rounded-2xl p-8 flex flex-col'>
               <div className='flex items-center gap-3 mb-4'>
                 <div className='bg-brand-accent text-brand-dark p-3 rounded-full'>
@@ -332,11 +315,6 @@ const GetInvolvedPage = () => {
                   </span>
                   <span className='text-slate-500 text-xs'>
                     Event Coordination
-                  </span>
-                </div>
-                <div className='bg-white/60 p-3 rounded-lg text-sm border border-brand-accent/20 flex items-center justify-center'>
-                  <span className='font-bold text-brand-dark/70 text-center text-xs italic'>
-                    And many more roles...
                   </span>
                 </div>
               </div>

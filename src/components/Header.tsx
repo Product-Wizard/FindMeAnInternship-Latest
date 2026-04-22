@@ -1,18 +1,23 @@
+"use client";
+
 import { useState } from "react";
 import { GraduationCap, Building2, Menu, X } from "lucide-react";
-import { useLocation, Link } from "react-router-dom";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import Logo from "@/assets/logo.png";
+
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
-  const NavItem = ({ to, label }: { to: string; label: string }) => {
+  const NavItem = ({ href, label }: { href: string; label: string }) => {
     const isActive =
-      location.pathname === to ||
-      (to !== "/" && location.pathname.startsWith(to));
+      pathname === href ||
+      (href !== "/" && pathname?.startsWith(href));
     return (
       <Link
-        to={to}
+        href={href}
         onClick={() => setMobileMenuOpen(false)}
         className={`font-medium transition-colors ${
           isActive
@@ -31,7 +36,7 @@ const Navbar = () => {
         {/* <div className='w-screen mx-auto overflow-hidden px-4 sm:px-6 lg:px-8'> */}
         <div className='flex justify-between h-20 items-center'>
           {/* Logo */}
-          <Link to='/' className='flex items-center gap-2 group'>
+          <Link href='/' className='flex items-center gap-2 group'>
             <div className='relative w-10 h-10 flex items-center justify-center bg-brand-teal/10 rounded-lg group-hover:bg-brand-teal/20 transition-colors'>
               <GraduationCap className='w-6 h-6 text-brand-dark absolute -top-1 -left-1' />
               <Building2 className='w-6 h-6 text-brand-teal absolute bottom-0 right-0' />
@@ -48,12 +53,12 @@ const Navbar = () => {
 
           {/* Desktop Nav */}
           <div className='hide show-nav-bar gap-8 items-center'>
-            <NavItem to='/' label='Home' />
-            {/* <NavItem to='/impact' label='Our Impact' /> */}
-            <NavItem to='/jobs' label='Find Opportunities' />
-            <NavItem to='/resources' label='Resources & Blog' />
+            <NavItem href='/' label='Home' />
+            {/* <NavItem href='/impact' label='Our Impact' /> */}
+            <NavItem href='/jobs' label='Find Opportunities' />
+            <NavItem href='/resources' label='Resources & Blog' />
             <Link
-              to='/involved'
+              href='/involved'
               className='bg-brand-dark hover:bg-brand-teal text-white px-5 py-2.5 rounded-full font-medium transition-all transform hover:scale-105 shadow-md'
             >
               Get Involved
@@ -75,11 +80,11 @@ const Navbar = () => {
       {/* Mobile Nav */}
       {mobileMenuOpen && (
         <div className='md:hidden bg-white border-b border-slate-200 p-4 space-y-4 flex flex-col'>
-          <NavItem to='/' label='Home' />
-          {/* <NavItem to='/impact' label='Our Impact' /> */}
-          <NavItem to='/jobs' label='Find Opportunities' />
-          <NavItem to='/resources' label='Resources & Blog' />
-          <NavItem to='/involved' label='Get Involved' />
+          <NavItem href='/' label='Home' />
+          {/* <NavItem href='/impact' label='Our Impact' /> */}
+          <NavItem href='/jobs' label='Find Opportunities' />
+          <NavItem href='/resources' label='Resources & Blog' />
+          <NavItem href='/involved' label='Get Involved' />
         </div>
       )}
     </nav>

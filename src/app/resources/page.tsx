@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+"use client";
+
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   Clock,
   User,
@@ -11,9 +13,7 @@ import {
   Facebook,
   Twitter,
   Linkedin,
-  Search,
 } from "lucide-react";
-import { Article } from "../types";
 import ResourceService from "@/ApiService/ResourceSevice";
 import { useQueryClient } from "@tanstack/react-query";
 import ResourceItem from "@/components/ResourceItem";
@@ -21,16 +21,18 @@ import { ResourceModelInterface } from "@/types/model/resource.model";
 import Paginator from "@/components/Paginator";
 import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
 import BlockLoadingIndicator from "@/components/BlockLoadingIndicator";
-import SEO from "@/components/SEO";
 
 const PER_PAGE = 20;
 
-export const ResourcesPage: React.FC = () => {
+function ResourcesContent() {
   const queryClient = useQueryClient();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const articleId = searchParams.get("id");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+
   const fetchResource = ResourceService.fetchResourcesServiceQuery({
     page: page,
     perPage: PER_PAGE,
@@ -60,29 +62,20 @@ export const ResourcesPage: React.FC = () => {
       setActiveArticle(null);
     }
     setCopied(false);
-  }, [articleId]);
+  }, [articleId, fetchResource?.data?.data]);
 
   const handleResourceClick = (resource: ResourceModelInterface) => {
-    setSearchParams({ id: `${resource.id}` });
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("id", `${resource.id}`);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleBack = () => {
-    setSearchParams({});
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("id");
+    router.push(`${pathname}?${params.toString()}`);
   };
 
-  const trigerFilterSearch = () => {
-    setTimeout(
-      () =>
-        queryClient.invalidateQueries({
-          queryKey: [
-            ...ApiQueryMutationKeys.ResourceQuryMutationKeys
-              .getResourcesQueryKeys,
-            1,
-          ],
-        }),
-      400
-    );
-  };
   const handleShare = (
     platform: "twitter" | "linkedin" | "facebook" | "copy"
   ) => {
@@ -139,39 +132,6 @@ export const ResourcesPage: React.FC = () => {
             </p>
           </div>
         </div>
-        {/* search */}
-        {/* <div className='flex-1 relative mb-10'>
-          <Search className='absolute left-3 top-2.5 w-4 h-4 text-slate-400' />
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              // document.getElementById("search-text-input")?.blur();
-              // if (!filter) return;
-              trigerFilterSearch();
-            }}
-          >
-            <div className='flex items-center'>
-              <input
-                type='text'
-                id='search-text-input'
-                placeholder='Search by title or author name'
-                className='w-full pl-10 p-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-brand-teal'
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onBlur={() => {
-                  // if (!filter) return;
-                  trigerFilterSearch();
-                }}
-              />
-              <button
-                type='submit'
-                className=' rounded-lg bg-brand-teal p-3 ml-1'
-              >
-                <Search className='w-4 h-4 text-white' />
-              </button>
-            </div>
-          </form>
-        </div> */}
 
         <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {fetchResource?.data?.data?.map((resource) => (
@@ -190,6 +150,7 @@ export const ResourcesPage: React.FC = () => {
       </div>
     );
   };
+
   const RenderDetail = () => {
     if (!activeArticle) return null;
     return (
@@ -241,7 +202,6 @@ export const ResourcesPage: React.FC = () => {
               dangerouslySetInnerHTML={{ __html: activeArticle.body }}
             />
 
-            {/* Social Share Section */}
             <div className='mt-12 pt-8 border-t border-slate-100'>
               <h4 className='font-bold text-slate-900 mb-4 flex items-center gap-2'>
                 <Share2 className='w-5 h-5 text-brand-teal' /> Share this
@@ -290,27 +250,25 @@ export const ResourcesPage: React.FC = () => {
   };
 
   return (
-    <div className='min-h-screen bg-slate-50 py-12'>
-      <SEO
-        title={activeArticle ? `${activeArticle.title} | Career Resources Nigeria` : 'Career Resources for Nigerian Students and Graduates'}
-        description={
-          activeArticle
-            ? activeArticle.summary || activeArticle.title
-            : 'Explore practical career guides, CV tips, interview prep, and internship advice built for students and early-career job seekers in Nigeria.'
-        }
-        keywords='career resources nigeria, cv tips nigeria, internship interview tips, graduate career guide'
-        path={activeArticle ? `/resources?id=${activeArticle.id}` : '/resources'}
-      />
-      <div className='max-w-7xl mx-auto px-4'>
-        {activeArticle ? <RenderDetail /> : <RenderList />}
-        <div>
-          <Paginator
-            currentPage={page}
-            handlePageChange={setPage}
-            pagination={fetchResource?.data?.pagination}
-          />
-        </div>
+    <div className='max-w-7xl mx-auto px-4'>
+      {activeArticle ? <RenderDetail /> : <RenderList />}
+      <div>
+        <Paginator
+          currentPage={page}
+          handlePageChange={setPage}
+          pagination={fetchResource?.data?.pagination}
+        />
       </div>
     </div>
   );
-};
+}
+
+export default function ResourcesPage() {
+  return (
+    <div className='min-h-screen bg-slate-50 py-12'>
+      <Suspense fallback={<BlockLoadingIndicator />}>
+        <ResourcesContent />
+      </Suspense>
+    </div>
+  );
+}

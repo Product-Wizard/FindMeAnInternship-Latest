@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Building2, ArrowRight, MapPin, Search } from "lucide-react";
 import { JobSlider } from "@/components/JobSlider";
 import JobTrainingScopePicker from "@/components/JobTrainingScopePicker";
@@ -15,10 +17,10 @@ import JobApplicationModal from "@/components/JobApplicationModal";
 import { useQueryClient } from "@tanstack/react-query";
 import ApiQueryMutationKeys from "@/consts/ApiQueryMutationKeys";
 import NigerianStates from "@/consts/NigerianStates";
-import SEO from "@/components/SEO";
 import JobCompensationSummary from "@/components/JobCompensationSummary";
 
 const PER_PAGE = 20;
+
 const JobBoard = () => {
   const queryClient = useQueryClient();
   const [remote, setRemote] = useState(false);
@@ -32,7 +34,6 @@ const JobBoard = () => {
   const [page, setPage] = useState(1);
 
   const handleCheckAllClicked = (checkedState: boolean) => {
-    // if (!checkedState) return
     setAll(checkedState);
     setRemote(checkedState);
     setOnSite(checkedState);
@@ -84,7 +85,6 @@ const JobBoard = () => {
     return jobs;
   };
 
-  // Reset pagination when filters change
   const trigerFilterSearch = () => {
     setPage(1);
     setTimeout(
@@ -100,7 +100,6 @@ const JobBoard = () => {
   };
 
   const sliderJobs = getFilteredJobs();
-  const categoryJobs = filterJobsByCategory();
 
   useEffect(() => {
     if (onSite && remote && hybrid) {
@@ -114,12 +113,6 @@ const JobBoard = () => {
 
   return (
     <div className='min-h-screen bg-slate-50 py-12 overflow-x-hidden'>
-      <SEO
-        title='Internship Job Board in Nigeria'
-        description='Browse verified internship openings, SIWES opportunities, and graduate trainee roles across Nigerian states. Filter by location, category, and work mode.'
-        keywords='nigeria internship jobs, siwes jobs, graduate trainee roles nigeria, remote internship nigeria'
-        path='/jobs'
-      />
       {fetchJobQuery?.isFetching ? <BlockLoadingIndicator /> : null}
       <div className=' w-full lg:max-w-7xl mx-auto px-4'>
         {/* Header */}
@@ -169,7 +162,6 @@ const JobBoard = () => {
                     <label className='block text-xs font-semibold text-slate-500 uppercase mb-2'>
                       Location Type
                     </label>
-                    {/* job filter by job type */}
                     <div className='space-y-2'>
                       <label className='flex items-center gap-2 text-sm text-slate-700 cursor-pointer'>
                         <input
@@ -217,26 +209,23 @@ const JobBoard = () => {
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        document.getElementById("search-text-input")?.blur();
-                        // if (!search) return;
-                        trigerFilterSearch();
+                        // trigerFilterSearch();
                       }}
                     >
                       <div className='flex items-center'>
                         <input
                           type='text'
-                          id='search-text-input'
                           placeholder='Search by title or company...'
                           className='w-full pl-10 p-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-brand-teal'
                           value={search}
                           onChange={(e) => setSearch(e.target.value)}
                           onBlur={() => {
-                            // if (!search) return;
                             trigerFilterSearch();
                           }}
                         />
                         <button
                           type='submit'
+                          onClick={() => trigerFilterSearch()}
                           className=' rounded-lg bg-brand-teal p-3 ml-1'
                         >
                           <Search className='w-4 h-4 text-white' />
@@ -350,11 +339,11 @@ function JobItemList({ job }: { job: JobModelInterface }) {
           onClose={() => setOpenJobApplication(false)}
         />
       ) : null}
-      <Link to={`/jobs/${job.id}`}>
+      <Link href={`/jobs/${job.id}`}>
         <div className='flex justify-between items-start mb-2'>
           <div>
             <h3 className='text-lg font-bold text-brand-dark group-hover:text-brand-teal transition-colors'>
-              <Link to={`/jobs/${job.id}`}>{job.title}</Link>
+              {job.title}
             </h3>
             <div className='flex items-center gap-2 text-sm text-slate-500 mb-2'>
               <Building2 className='w-3 h-3' /> {job.company}
@@ -387,17 +376,11 @@ function JobItemList({ job }: { job: JobModelInterface }) {
           </span>
           <div className='flex items-center gap-4'>
             <Link
-              to={`/jobs/${job.id}`}
+              href={`/jobs/${job.id}`}
               className='text-sm font-bold text-brand-dark hover:text-brand-teal'
             >
               View Details
             </Link>
-            {/* <button
-            onClick={() => setOpenJobApplication(true)}
-            className='text-sm font-bold text-brand-teal hover:text-brand-dark'
-          >
-            Apply Now &rarr;
-          </button> */}
           </div>
         </div>
       </Link>
