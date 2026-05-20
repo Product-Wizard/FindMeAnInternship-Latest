@@ -7,7 +7,6 @@ import {
   ChevronRight,
   MapPin,
   Building2,
-  CalendarDays,
   ArrowRight,
 } from "lucide-react";
 import { JobModelInterface } from "@/types/model/Job.model";
@@ -113,10 +112,6 @@ function SliderJobItem({ job }: { job: JobModelInterface }) {
             <div className='flex items-center gap-2 text-sm text-slate-600'>
               <MapPin className='w-4 h-4 text-brand-teal' />
               <span className='truncate'>{job.location}</span>
-            </div>
-            <div className='flex items-center gap-2 text-sm text-slate-600'>
-              <CalendarDays className='w-4 h-4 text-brand-accent' />
-              <span className='text-xs'>{job.postedDate}</span>
             </div>
           </div>
 
