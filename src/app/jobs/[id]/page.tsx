@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   ArrowLeft,
   Building2,
-  CalendarDays,
   ExternalLink,
   Globe,
   MapPin,
@@ -150,11 +149,6 @@ function JobDetailsPage({ params }: PageProps) {
                   icon={<Tag className='w-4 h-4' />}
                   label='Category'
                   value={toLabel(job.category)}
-                />
-                <InfoPill
-                  icon={<CalendarDays className='w-4 h-4' />}
-                  label='Posted'
-                  value={job.postedDate}
                 />
               </div>
 

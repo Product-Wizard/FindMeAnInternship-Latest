@@ -363,10 +363,7 @@ function JobItemList({ job }: { job: JobModelInterface }) {
             {job.description}
           </p>
         </div>
-        <div className='flex justify-between items-center pt-4 border-t border-slate-50'>
-          <span className='text-xs text-slate-400'>
-            Posted {job.postedDate}
-          </span>
+        <div className='flex justify-end items-center pt-4 border-t border-slate-50'>
           <div className='flex items-center gap-4'>
             <a
               href={job.link}
